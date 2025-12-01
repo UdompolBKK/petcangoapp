@@ -1,9 +1,4 @@
 {
   "framework": "nuxtjs",
-  "regions": ["sin1"],
-  "functions": {
-    "api/**/*.js": {
-      "maxDuration": 30
-    }
-  }
+  "regions": ["sin1"]
 }
