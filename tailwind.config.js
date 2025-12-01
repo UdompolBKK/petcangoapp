@@ -11,30 +11,48 @@ export default {
   theme: {
     extend: {
       colors: {
-        // สีหลักจาก Taildash
-        primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6', // สีฟ้าหลัก
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
+        // ============================================
+        // CI Colors - PetCanGo Brand
+        // แก้ไขสีหลักที่นี่เพื่ออัพเดททั้งเว็บไซต์
+        // ============================================
+        brand: {
+          // Primary: Pink (#EC4798)
+          primary: '#EC4798',
+          'primary-light': '#F472B6',
+          'primary-dark': '#DB2777',
+          // Secondary: Orange (#FF9502)
+          secondary: '#FF9502',
+          'secondary-light': '#FBBF24',
+          'secondary-dark': '#F59E0B',
+          // Gradient colors
+          'gradient-from': '#EC4798',
+          'gradient-to': '#FF9502',
         },
+        // Primary palette (Pink-based)
+        primary: {
+          50: '#FDF2F8',
+          100: '#FCE7F3',
+          200: '#FBCFE8',
+          300: '#F9A8D4',
+          400: '#F472B6',
+          500: '#EC4798', // Main CI color
+          600: '#DB2777',
+          700: '#BE185D',
+          800: '#9D174D',
+          900: '#831843',
+        },
+        // Secondary palette (Orange-based)
         secondary: {
-          50: '#f0fdf4',
-          100: '#dcfce7',
-          200: '#bbf7d0',
-          300: '#86efac',
-          400: '#4ade80',
-          500: '#22c55e',
-          600: '#16a34a',
-          700: '#15803d',
-          800: '#166534',
-          900: '#14532d',
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#FF9502', // Main CI color
+          600: '#F59E0B',
+          700: '#D97706',
+          800: '#B45309',
+          900: '#92400E',
         },
         // เพิ่มสีที่ใช้ใน Dashboard
         success: {
@@ -73,7 +91,31 @@ export default {
       },
       borderColor: {
         'default': '#E5E7EB',
-      }
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'shimmer': 'shimmer 1.5s infinite',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'scale-in': 'scaleIn 0.3s ease-out',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        shimmer: {
+          '0%': { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition: '200% 0' },
+        },
+        slideUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+      },
     },
   },
   plugins: [],

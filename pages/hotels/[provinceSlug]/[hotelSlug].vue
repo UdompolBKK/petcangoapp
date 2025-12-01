@@ -109,7 +109,7 @@
               <div v-if="hotel.address || hotel.location" class="bg-white rounded-xl shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">Location</h2>
                 <div class="flex items-start text-gray-700">
-                  <svg class="w-5 h-5 mr-2 mt-1 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 mr-2 mt-1 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                   </svg>
@@ -159,7 +159,7 @@
             <div class="lg:col-span-1">
               <div class="bg-white rounded-xl shadow-md p-6 sticky top-24">
                 <div class="mb-6">
-                  <div class="text-3xl font-bold text-red-500 mb-2">
+                  <div class="text-3xl font-bold text-primary-500 mb-2">
                     {{ formatPrice(hotel.priceStart) }} THB
                   </div>
                   <p class="text-sm text-gray-600">per night (starting from)</p>
@@ -170,19 +170,19 @@
                     <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                     </svg>
-                    <a :href="`tel:${hotel.phone}`" class="hover:text-red-500">{{ hotel.phone }}</a>
+                    <a :href="`tel:${hotel.phone}`" class="hover:text-primary-500">{{ hotel.phone }}</a>
                   </div>
                   <div v-if="hotel.email" class="flex items-center text-gray-700">
                     <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                     </svg>
-                    <a :href="`mailto:${hotel.email}`" class="hover:text-red-500">{{ hotel.email }}</a>
+                    <a :href="`mailto:${hotel.email}`" class="hover:text-primary-500">{{ hotel.email }}</a>
                   </div>
                   <div v-if="hotel.website" class="flex items-center text-gray-700">
                     <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
                     </svg>
-                    <a :href="hotel.website" target="_blank" class="hover:text-red-500 truncate">Website</a>
+                    <a :href="hotel.website" target="_blank" class="hover:text-primary-500 truncate">Website</a>
                   </div>
                 </div>
 
@@ -227,57 +227,97 @@
 
   <div v-else class="min-h-screen flex items-center justify-center">
     <div class="text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto mb-4"></div>
+      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
       <p class="text-gray-600">Loading...</p>
     </div>
   </div>
 
-  <!-- Gallery Lightbox Modal -->
-  <div
-    v-if="showGalleryModal"
-    class="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
-    @click="closeGallery"
-  >
-    <button
-      class="absolute top-4 right-4 text-white hover:text-gray-300 z-50"
-      @click="closeGallery"
+  <!-- Gallery Lightbox Modal with Animation -->
+  <Teleport to="body">
+    <Transition
+      enter-active-class="transition-opacity duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
     >
-      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-      </svg>
-    </button>
+      <div
+        v-if="showGalleryModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm"
+        @click="closeGallery"
+      >
+        <!-- Close button -->
+        <button
+          class="absolute top-4 right-4 text-white/80 hover:text-white z-50 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+          @click="closeGallery"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
 
-    <button
-      v-if="currentGalleryIndex > 0"
-      class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 z-50"
-      @click.stop="prevImage"
-    >
-      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-      </svg>
-    </button>
+        <!-- Previous button -->
+        <button
+          v-if="currentGalleryIndex > 0"
+          class="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+          @click.stop="prevImage"
+        >
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
 
-    <div class="max-w-6xl max-h-[90vh] w-full mx-4" @click.stop>
-      <img
-        :src="getCurrentGalleryImage()"
-        :alt="`Gallery image ${currentGalleryIndex + 1}`"
-        class="w-full h-full object-contain"
-      />
-      <div class="text-white text-center mt-4">
-        {{ currentGalleryIndex + 1 }} / {{ hotel?.gallery?.length || 0 }}
+        <!-- Image container with animation -->
+        <div class="max-w-6xl max-h-[90vh] w-full mx-4 px-12" @click.stop>
+          <Transition
+            :name="galleryDirection"
+            mode="out-in"
+          >
+            <img
+              :key="currentGalleryIndex"
+              :src="getCurrentGalleryImage()"
+              :alt="`Gallery image ${currentGalleryIndex + 1}`"
+              class="w-full h-full object-contain max-h-[80vh] rounded-lg shadow-2xl"
+            />
+          </Transition>
+
+          <!-- Image counter -->
+          <div class="text-white/80 text-center mt-4 text-sm font-medium">
+            {{ currentGalleryIndex + 1 }} / {{ hotel?.gallery?.length || 0 }}
+          </div>
+
+          <!-- Thumbnail strip -->
+          <div v-if="hotel?.gallery && hotel.gallery.length > 1" class="flex justify-center gap-2 mt-4 overflow-x-auto pb-2">
+            <button
+              v-for="(item, index) in hotel.gallery"
+              :key="index"
+              class="flex-shrink-0 w-16 h-12 rounded-md overflow-hidden transition-all duration-200"
+              :class="index === currentGalleryIndex ? 'ring-2 ring-white opacity-100' : 'opacity-50 hover:opacity-80'"
+              @click.stop="goToImage(index)"
+            >
+              <img
+                :src="item.image || item"
+                :alt="`Thumbnail ${index + 1}`"
+                class="w-full h-full object-cover"
+              />
+            </button>
+          </div>
+        </div>
+
+        <!-- Next button -->
+        <button
+          v-if="hotel?.gallery && currentGalleryIndex < hotel.gallery.length - 1"
+          class="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white z-50 p-3 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-200"
+          @click.stop="nextImage"
+        >
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
       </div>
-    </div>
-
-    <button
-      v-if="hotel?.gallery && currentGalleryIndex < hotel.gallery.length - 1"
-      class="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 z-50"
-      @click.stop="nextImage"
-    >
-      <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-      </svg>
-    </button>
-  </div>
+    </Transition>
+  </Teleport>
 </template>
 
 <script setup lang="ts">
@@ -287,12 +327,15 @@ const hotelSlug = route.params.hotelSlug as string
 
 const { getHotelBySlug, getHotelsByProvince } = useHotels()
 const { getCollection } = useFirestore()
+const { trackPageView } = usePageView()
+const { setHotelSEO } = useSEO()
 
 const hotel = ref<any>(null)
 const relatedHotels = ref<any[]>([])
 const reviews = ref<any[]>([])
 const showGalleryModal = ref(false)
 const currentGalleryIndex = ref(0)
+const galleryDirection = ref('slide-right')
 
 const averageRating = computed(() => {
   if (reviews.value.length === 0) return 0
@@ -352,14 +395,21 @@ const closeGallery = () => {
 
 const nextImage = () => {
   if (hotel.value?.gallery && currentGalleryIndex.value < hotel.value.gallery.length - 1) {
+    galleryDirection.value = 'slide-right'
     currentGalleryIndex.value++
   }
 }
 
 const prevImage = () => {
   if (currentGalleryIndex.value > 0) {
+    galleryDirection.value = 'slide-left'
     currentGalleryIndex.value--
   }
+}
+
+const goToImage = (index: number) => {
+  galleryDirection.value = index > currentGalleryIndex.value ? 'slide-right' : 'slide-left'
+  currentGalleryIndex.value = index
 }
 
 const getCurrentGalleryImage = () => {
@@ -385,10 +435,29 @@ const loadReviews = async () => {
 }
 
 onMounted(async () => {
-  const hotelData = await getHotelBySlug(hotelSlug)
+  const hotelData: any = await getHotelBySlug(hotelSlug)
 
   if (hotelData) {
     hotel.value = hotelData
+
+    // Set SEO with structured data
+    setHotelSEO({
+      name: hotelData.name,
+      description: hotelData.shortDescription || hotelData.description,
+      image: hotelData.mainImage || hotelData.image,
+      address: hotelData.address,
+      province: hotelData.province?.name,
+      priceStart: hotelData.priceStart,
+      rating: hotelData.rating,
+      reviewCount: hotelData.reviewCount,
+      facilities: hotelData.facilities?.map((f: any) => f.name || f),
+      phone: hotelData.phone,
+      website: hotelData.website,
+      slug: `${provinceSlug}/${hotelSlug}`
+    })
+
+    // Track pageview
+    trackPageView('hotel', hotelData.id)
 
     if (hotelData.province?.id) {
       const related = await getHotelsByProvince(hotelData.province.id, 4)
@@ -419,17 +488,38 @@ const handleKeyPress = (event: KeyboardEvent) => {
   }
 }
 
-useHead(() => ({
-  title: hotel.value
-    ? `${hotel.value.name} - ${getProvinceName(hotel.value.province)} | PetCanGo`
-    : 'PetCanGo',
-  meta: [
-    {
-      name: 'description',
-      content: hotel.value
-        ? `${hotel.value.name} ${hotel.value.shortDescription || ''} Starting from ${hotel.value.priceStart} THB per night`
-        : 'Find pet-friendly accommodation across Thailand'
-    }
-  ]
-}))
 </script>
+
+<style scoped>
+/* Slide right animation (next) */
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+/* Slide left animation (prev) */
+.slide-left-enter-active,
+.slide-left-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+</style>

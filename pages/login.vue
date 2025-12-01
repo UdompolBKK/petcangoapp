@@ -63,7 +63,7 @@
               type="email"
               required
               placeholder="your@email.com"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               :disabled="loading"
             />
           </div>
@@ -78,7 +78,7 @@
               type="password"
               required
               placeholder="••••••••"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               :disabled="loading"
             />
           </div>
@@ -86,7 +86,7 @@
           <button
             type="submit"
             :disabled="loading"
-            class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            class="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             <svg
               v-if="loading"
@@ -106,7 +106,7 @@
         <div class="mt-6 text-center">
           <p class="text-sm text-gray-600">
             ยังไม่มีบัญชี?
-            <NuxtLink to="/register" class="text-red-500 hover:text-red-600 font-medium">
+            <NuxtLink to="/register" class="text-primary-500 hover:text-primary-600 font-medium">
               สมัครสมาชิก
             </NuxtLink>
           </p>

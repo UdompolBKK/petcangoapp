@@ -9,7 +9,7 @@
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
 
       <!-- Error State -->
@@ -33,7 +33,7 @@
                 />
                 <div
                   v-else
-                  class="h-24 w-24 rounded-full bg-red-500 text-white text-3xl font-bold flex items-center justify-center mx-auto"
+                  class="h-24 w-24 rounded-full bg-primary-500 text-white text-3xl font-bold flex items-center justify-center mx-auto"
                 >
                   {{ (profile.displayName || profile.email || 'U')[0].toUpperCase() }}
                 </div>
@@ -113,7 +113,7 @@
                   id="displayName"
                   v-model="form.displayName"
                   type="text"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   :disabled="updating"
                 />
               </div>
@@ -141,7 +141,7 @@
                   v-model="form.phone"
                   type="tel"
                   placeholder="081-234-5678"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   :disabled="updating"
                 />
               </div>
@@ -155,7 +155,7 @@
                   v-model="form.address"
                   rows="3"
                   placeholder="ที่อยู่ของคุณ"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                   :disabled="updating"
                 ></textarea>
               </div>
@@ -169,7 +169,7 @@
                   v-model="form.bio"
                   rows="3"
                   placeholder="เล่าเกี่ยวกับตัวคุณและสัตว์เลี้ยงของคุณ"
-                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                  class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                   :disabled="updating"
                 ></textarea>
               </div>
@@ -178,7 +178,7 @@
                 <button
                   type="submit"
                   :disabled="updating"
-                  class="flex-1 bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  class="flex-1 bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   <svg
                     v-if="updating"

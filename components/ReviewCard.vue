@@ -12,7 +12,7 @@
         />
         <div
           v-else
-          class="w-12 h-12 rounded-full bg-red-500 text-white flex items-center justify-center text-lg font-bold"
+          class="w-12 h-12 rounded-full bg-primary-500 text-white flex items-center justify-center text-lg font-bold"
         >
           {{ (review.userName || 'U')[0].toUpperCase() }}
         </div>

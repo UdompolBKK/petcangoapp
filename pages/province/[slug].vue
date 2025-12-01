@@ -147,7 +147,7 @@
   <!-- Loading State -->
   <div v-else class="min-h-screen flex items-center justify-center">
     <div class="text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto mb-4"></div>
+      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
       <p class="text-gray-600">กำลังโหลด...</p>
     </div>
   </div>
@@ -160,6 +160,7 @@ const slug = route.params.slug as string
 // Composables
 const { getProvinceBySlug } = useProvinces()
 const { getHotelsByProvince } = useHotels()
+const { setProvinceSEO } = useSEO()
 
 // Data
 const province = ref(null)
@@ -208,28 +209,25 @@ const handleAttractionImageError = (event: Event) => {
 // Load data from Firestore
 onMounted(async () => {
   // Get province data
-  const provinceData = await getProvinceBySlug(slug)
+  const provinceData: any = await getProvinceBySlug(slug)
   if (provinceData) {
     province.value = provinceData
+
+    // Set SEO with structured data
+    setProvinceSEO({
+      name: provinceData.name,
+      description: provinceData.description,
+      image: provinceData.image,
+      hotelCount: provinceData.hotelCount,
+      region: provinceData.region,
+      slug: slug
+    })
 
     // Get hotels in this province
     const hotelsData = await getHotelsByProvince(provinceData.id)
     hotels.value = hotelsData
   }
 })
-
-// SEO - use computed to wait for data to load
-useHead(() => ({
-  title: province.value ? `ที่พักสัตว์เลี้ยงใน${province.value.name} - PetCanGo` : 'PetCanGo',
-  meta: [
-    {
-      name: 'description',
-      content: province.value
-        ? `ค้นหาที่พักที่รับสัตว์เลี้ยงใน${province.value.name} มากกว่า ${province.value.hotelCount} แห่ง โรงแรม รีสอร์ท วิลล่า ราคาถูก พร้อมรีวิว`
-        : 'ค้นหาที่พักสำหรับสัตว์เลี้ยงทั่วประเทศไทย'
-    }
-  ]
-}))
 </script>
 
 <style scoped>

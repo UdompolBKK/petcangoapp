@@ -3,44 +3,44 @@
     <div class="container-custom">
       <div class="flex items-center justify-between py-4">
         <!-- Logo -->
-        <NuxtLink to="/" class="flex items-center space-x-2">
-          <span class="text-2xl font-bold text-red-500">🐾 PetCanGo</span>
+        <NuxtLink to="/" class="flex items-center space-x-2 group">
+          <span class="text-2xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent group-hover:from-primary-600 group-hover:to-secondary-600 transition-all">🐾 PetCanGo</span>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
         <nav class="hidden md:flex items-center space-x-6">
           <NuxtLink
             to="/"
-            class="text-gray-700 hover:text-red-500 transition-colors font-medium"
-            active-class="text-red-500"
+            class="text-gray-700 hover:text-primary-500 transition-colors font-medium"
+            active-class="text-primary-500"
           >
             หน้าหลัก
           </NuxtLink>
           <NuxtLink
             to="/all-province"
-            class="text-gray-700 hover:text-red-500 transition-colors font-medium"
-            active-class="text-red-500"
+            class="text-gray-700 hover:text-primary-500 transition-colors font-medium"
+            active-class="text-primary-500"
           >
             ที่พักทั้งหมด
           </NuxtLink>
           <NuxtLink
             to="/blogs"
-            class="text-gray-700 hover:text-red-500 transition-colors font-medium"
-            active-class="text-red-500"
+            class="text-gray-700 hover:text-primary-500 transition-colors font-medium"
+            active-class="text-primary-500"
           >
             บทความ
           </NuxtLink>
           <NuxtLink
             to="/about"
-            class="text-gray-700 hover:text-red-500 transition-colors font-medium"
-            active-class="text-red-500"
+            class="text-gray-700 hover:text-primary-500 transition-colors font-medium"
+            active-class="text-primary-500"
           >
             เกี่ยวกับเรา
           </NuxtLink>
           <NuxtLink
             to="/contact"
-            class="text-gray-700 hover:text-red-500 transition-colors font-medium"
-            active-class="text-red-500"
+            class="text-gray-700 hover:text-primary-500 transition-colors font-medium"
+            active-class="text-primary-500"
           >
             ติดต่อเรา
           </NuxtLink>
@@ -128,7 +128,7 @@
                     แดชบอร์ด
                   </NuxtLink>
                   <NuxtLink
-                    to="/dashboard/hotels"
+                    to="/my-hotels"
                     class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
                     @click="closeUserMenu"
                   >
@@ -144,7 +144,7 @@
                   <hr class="my-2" />
                   <button
                     @click="handleLogout"
-                    class="w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                    class="w-full text-left px-4 py-2 text-primary-600 hover:bg-primary-50 transition-colors"
                   >
                     ออกจากระบบ
                   </button>
@@ -206,35 +206,35 @@
           <nav class="flex flex-col space-y-3">
             <NuxtLink
               to="/"
-              class="text-gray-700 hover:text-red-500 transition-colors font-medium py-2"
+              class="text-gray-700 hover:text-primary-500 transition-colors font-medium py-2"
               @click="closeMobileMenu"
             >
               หน้าหลัก
             </NuxtLink>
             <NuxtLink
               to="/all-province"
-              class="text-gray-700 hover:text-red-500 transition-colors font-medium py-2"
+              class="text-gray-700 hover:text-primary-500 transition-colors font-medium py-2"
               @click="closeMobileMenu"
             >
               ที่พักทั้งหมด
             </NuxtLink>
             <NuxtLink
               to="/blogs"
-              class="text-gray-700 hover:text-red-500 transition-colors font-medium py-2"
+              class="text-gray-700 hover:text-primary-500 transition-colors font-medium py-2"
               @click="closeMobileMenu"
             >
               บทความ
             </NuxtLink>
             <NuxtLink
               to="/about"
-              class="text-gray-700 hover:text-red-500 transition-colors font-medium py-2"
+              class="text-gray-700 hover:text-primary-500 transition-colors font-medium py-2"
               @click="closeMobileMenu"
             >
               เกี่ยวกับเรา
             </NuxtLink>
             <NuxtLink
               to="/contact"
-              class="text-gray-700 hover:text-red-500 transition-colors font-medium py-2"
+              class="text-gray-700 hover:text-primary-500 transition-colors font-medium py-2"
               @click="closeMobileMenu"
             >
               ติดต่อเรา

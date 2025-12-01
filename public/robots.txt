@@ -1,0 +1,30 @@
+# PetCanGo Robots.txt
+# https://petcango.com
+
+User-agent: *
+Allow: /
+
+# Disallow backend/admin pages
+Disallow: /backend/
+Disallow: /backend/*
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /dashboard
+
+# Allow search engines to find everything else
+Allow: /hotels/
+Allow: /province/
+Allow: /blogs/
+Allow: /search
+Allow: /all-province
+Allow: /about
+Allow: /contact
+Allow: /faq
+
+# Sitemap location
+Sitemap: https://petcango.com/sitemap.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1

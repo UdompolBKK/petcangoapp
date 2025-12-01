@@ -1,13 +1,29 @@
-export default defineNuxtRouteMiddleware((to, from) => {
-  const { user, isAuthenticated, loading } = useAuth()
+export default defineNuxtRouteMiddleware(async (to, from) => {
+  // Only run on client-side
+  if (import.meta.server) return
 
-  // Wait for auth to initialize
+  const { isAuthenticated, loading } = useAuth()
+
+  // Wait for auth to initialize (with timeout)
   if (loading.value) {
-    return
+    await new Promise<void>((resolve) => {
+      const unwatch = watch(loading, (newValue) => {
+        if (!newValue) {
+          unwatch()
+          resolve()
+        }
+      }, { immediate: true })
+
+      // Timeout after 3 seconds
+      setTimeout(() => {
+        unwatch()
+        resolve()
+      }, 3000)
+    })
   }
 
   // Check if user is authenticated
   if (!isAuthenticated.value) {
-    return navigateTo('/login')
+    return navigateTo(`/login?redirect=${encodeURIComponent(to.fullPath)}`)
   }
 })

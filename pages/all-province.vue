@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Page Header -->
-    <section class="bg-gradient-to-r from-red-500 to-pink-500 text-white py-16">
+    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-16">
       <div class="container-custom">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl md:text-5xl font-bold mb-4">
@@ -23,7 +23,7 @@
             :class="[
               'px-6 py-2 rounded-full font-medium transition-colors',
               filterRegion === null
-                ? 'bg-red-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100'
             ]"
           >
@@ -36,7 +36,7 @@
             :class="[
               'px-6 py-2 rounded-full font-medium transition-colors',
               filterRegion === region.value
-                ? 'bg-red-500 text-white'
+                ? 'bg-primary-500 text-white'
                 : 'bg-white text-gray-700 hover:bg-gray-100'
             ]"
           >
@@ -52,7 +52,7 @@
         <!-- Stats -->
         <div class="mb-8 text-center">
           <p class="text-gray-600">
-            แสดง <span class="font-bold text-red-500">{{ filteredProvinces.length }}</span> จังหวัด
+            แสดง <span class="font-bold text-primary-500">{{ filteredProvinces.length }}</span> จังหวัด
           </p>
         </div>
 

@@ -4,19 +4,25 @@
     class="card group"
   >
     <!-- Featured Image -->
-    <div class="relative overflow-hidden aspect-video">
+    <div class="relative overflow-hidden aspect-video bg-gray-200">
       <img
-        :src="post.featuredImage || '/images/placeholder-blog.jpg'"
+        v-if="imageUrl"
+        :src="imageUrl"
         :alt="post.title"
         class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         @error="handleImageError"
       />
+      <div v-else class="w-full h-full flex items-center justify-center text-gray-400">
+        <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+      </div>
     </div>
 
     <!-- Content -->
     <div class="p-5">
       <!-- Title -->
-      <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-500 transition-colors">
+      <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary-500 transition-colors">
         {{ post.title }}
       </h3>
 
@@ -35,7 +41,7 @@
           <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
           </svg>
-          {{ formatDate(post.publishedAt || post.createdAt) }}
+          {{ formattedDate }}
         </div>
 
         <!-- View Count -->
@@ -75,8 +81,10 @@ interface BlogPost {
   slug: string
   excerpt?: string
   featuredImage?: string
-  publishedAt?: string
-  createdAt?: string
+  image?: string
+  coverImage?: string
+  publishedAt?: any
+  createdAt?: any
   viewCount?: number
   tags?: string[]
 }
@@ -87,15 +95,40 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const formatDate = (date: string | undefined): string => {
+const imageUrl = computed(() => {
+  // Try different image field names
+  return props.post.featuredImage || props.post.image || props.post.coverImage || ''
+})
+
+const formattedDate = computed(() => {
+  const date = props.post.publishedAt || props.post.createdAt
   if (!date) return ''
-  const d = new Date(date)
+
+  let d: Date
+
+  // Handle Firestore Timestamp
+  if (date.toDate && typeof date.toDate === 'function') {
+    d = date.toDate()
+  } else if (date._seconds) {
+    // Firestore Timestamp serialized
+    d = new Date(date._seconds * 1000)
+  } else if (typeof date === 'string') {
+    d = new Date(date)
+  } else if (date instanceof Date) {
+    d = date
+  } else {
+    return ''
+  }
+
+  // Check for invalid date
+  if (isNaN(d.getTime())) return ''
+
   return d.toLocaleDateString('th-TH', {
     year: 'numeric',
     month: 'short',
     day: 'numeric'
   })
-}
+})
 
 const formatNumber = (num: number): string => {
   if (num >= 1000) {
@@ -106,6 +139,6 @@ const formatNumber = (num: number): string => {
 
 const handleImageError = (event: Event) => {
   const img = event.target as HTMLImageElement
-  img.src = '/images/placeholder-blog.jpg'
+  img.style.display = 'none'
 }
 </script>

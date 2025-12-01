@@ -118,7 +118,7 @@
 
                 <!-- Forgot Password Link -->
                 <div class="text-right">
-                  <a href="#" class="text-sm text-red-500 hover:text-red-600">
+                  <a href="#" class="text-sm text-primary-500 hover:text-primary-600">
                     ลืมรหัสผ่าน?
                   </a>
                 </div>
@@ -148,7 +148,7 @@
                 ยังไม่มีบัญชี?
                 <NuxtLink
                   to="/register"
-                  class="text-red-500 hover:text-red-600 font-medium"
+                  class="text-primary-500 hover:text-primary-600 font-medium"
                   @click="closeModal"
                 >
                   สมัครสมาชิก

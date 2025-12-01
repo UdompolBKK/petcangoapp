@@ -114,7 +114,7 @@
                       class="w-full h-32 object-cover rounded-lg mb-2 group-hover:opacity-90 transition-opacity"
                       @error="handleImageError"
                     />
-                    <h4 class="font-medium text-gray-900 group-hover:text-red-500 transition-colors line-clamp-2">
+                    <h4 class="font-medium text-gray-900 group-hover:text-primary-500 transition-colors line-clamp-2">
                       {{ related.title }}
                     </h4>
                     <p class="text-xs text-gray-500 mt-1">
@@ -123,7 +123,7 @@
                   </NuxtLink>
                 </div>
 
-                <NuxtLink to="/blogs" class="block mt-6 text-center text-red-500 hover:text-red-600 font-medium">
+                <NuxtLink to="/blogs" class="block mt-6 text-center text-primary-500 hover:text-primary-600 font-medium">
                   ดูบทความทั้งหมด →
                 </NuxtLink>
               </div>
@@ -151,7 +151,7 @@
   <!-- Loading State -->
   <div v-else class="min-h-screen flex items-center justify-center">
     <div class="text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-red-500 mx-auto mb-4"></div>
+      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
       <p class="text-gray-600">กำลังโหลด...</p>
     </div>
   </div>
@@ -161,8 +161,17 @@
 const route = useRoute()
 const slug = route.params.slug as string
 
-// Mock data - will be replaced with Firebase
-const post = ref({
+const { getBlogBySlug, getLatestBlogs } = useBlogs()
+const { setArticleSEO } = useSEO()
+
+// Data
+const post = ref<any>(null)
+const relatedPosts = ref<any[]>([])
+const otherPosts = ref<any[]>([])
+const isLoading = ref(true)
+
+// Fallback mock data if blog not found
+const mockPost = {
   id: '1',
   title: 'อาหารอะไรดีต่อสุนัข?',
   slug: 'best-food-for-dogs',
@@ -225,62 +234,7 @@ const post = ref({
   createdAt: '2024-11-25',
   viewCount: 336,
   tags: ['อาหาร', 'สุนัข', 'สุขภาพ']
-})
-
-const relatedPosts = ref([
-  {
-    id: '3',
-    title: 'อาการหายใจหอบของสุนัข',
-    slug: 'dog-breathing-problems',
-    featuredImage: '/images/blogs/blog3.jpg',
-    publishedAt: '2024-11-23',
-    createdAt: '2024-11-23'
-  },
-  {
-    id: '5',
-    title: 'วิธีฝึกสุนัขให้เชื่อฟัง',
-    slug: 'dog-training-tips',
-    featuredImage: '/images/blogs/blog5.jpg',
-    publishedAt: '2024-11-21',
-    createdAt: '2024-11-21'
-  }
-])
-
-const otherPosts = ref([
-  {
-    id: '2',
-    title: 'พาสุนัขไปทะเลดีอย่างไร?',
-    slug: 'taking-dogs-to-beach',
-    excerpt: 'เคล็ดลับและข้อควรระวังในการพาสุนัขไปเที่ยวทะเล',
-    featuredImage: '/images/blogs/blog2.jpg',
-    publishedAt: '2024-11-24',
-    createdAt: '2024-11-24',
-    viewCount: 289,
-    tags: ['ท่องเที่ยว', 'สุนัข']
-  },
-  {
-    id: '4',
-    title: 'กฎหมายการเลี้ยงสัตว์ปี 2567',
-    slug: 'pet-law-2024',
-    excerpt: 'สิ่งที่เจ้าของสัตว์เลี้ยงควรรู้',
-    featuredImage: '/images/blogs/blog4.jpg',
-    publishedAt: '2024-11-22',
-    createdAt: '2024-11-22',
-    viewCount: 521,
-    tags: ['กฎหมาย']
-  },
-  {
-    id: '6',
-    title: 'อาหารห้ามให้แมว 10 อย่าง',
-    slug: 'dangerous-foods-for-cats',
-    excerpt: 'อาหารที่อันตรายต่อแมว',
-    featuredImage: '/images/blogs/blog6.jpg',
-    publishedAt: '2024-11-20',
-    createdAt: '2024-11-20',
-    viewCount: 445,
-    tags: ['แมว', 'อาหาร']
-  }
-])
+}
 
 const formatDate = (date: string): string => {
   const d = new Date(date)
@@ -300,27 +254,44 @@ const handleImageError = (event: Event) => {
   img.src = '/images/placeholder-blog.jpg'
 }
 
-// SEO
-useHead({
-  title: `${post.value.title} - PetCanGo`,
-  meta: [
-    {
-      name: 'description',
-      content: post.value.excerpt
-    },
-    {
-      property: 'og:title',
-      content: post.value.title
-    },
-    {
-      property: 'og:description',
-      content: post.value.excerpt
-    },
-    {
-      property: 'og:image',
-      content: post.value.featuredImage
+// Load blog data from Firestore
+onMounted(async () => {
+  isLoading.value = true
+
+  try {
+    // Get blog by slug
+    const blogData = await getBlogBySlug(slug)
+
+    if (blogData) {
+      post.value = blogData
+
+      // Set SEO with structured data
+      setArticleSEO({
+        title: blogData.title,
+        excerpt: blogData.excerpt,
+        image: blogData.featuredImage,
+        publishedAt: blogData.publishedAt || blogData.createdAt,
+        modifiedAt: blogData.updatedAt,
+        tags: blogData.tags,
+        slug: slug
+      })
+    } else {
+      // Use mock data if not found
+      post.value = mockPost
     }
-  ]
+
+    // Get other posts for sidebar and bottom section
+    const latestBlogs = await getLatestBlogs(6)
+    const filtered = latestBlogs.filter((b: any) => b.slug !== slug)
+    relatedPosts.value = filtered.slice(0, 2)
+    otherPosts.value = filtered.slice(2, 5)
+
+  } catch (error) {
+    console.error('Error loading blog:', error)
+    post.value = mockPost
+  }
+
+  isLoading.value = false
 })
 </script>
 

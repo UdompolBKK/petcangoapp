@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Page Header -->
-    <section class="bg-gradient-to-r from-red-500 to-pink-500 text-white py-16">
+    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-16">
       <div class="container-custom">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl md:text-5xl font-bold mb-4">
@@ -40,7 +40,7 @@
               :class="[
                 'px-4 py-2 rounded-lg font-medium transition-colors',
                 sortBy === 'latest'
-                  ? 'bg-red-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-white text-gray-700 hover:bg-gray-100'
               ]"
             >
@@ -51,7 +51,7 @@
               :class="[
                 'px-4 py-2 rounded-lg font-medium transition-colors',
                 sortBy === 'popular'
-                  ? 'bg-red-500 text-white'
+                  ? 'bg-primary-500 text-white'
                   : 'bg-white text-gray-700 hover:bg-gray-100'
               ]"
             >
@@ -68,12 +68,24 @@
         <!-- Stats -->
         <div class="mb-8">
           <p class="text-gray-600">
-            แสดง <span class="font-bold text-red-500">{{ filteredPosts.length }}</span> บทความ
+            แสดง <span class="font-bold text-primary-500">{{ filteredPosts.length }}</span> บทความ
           </p>
         </div>
 
+        <!-- Loading -->
+        <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div v-for="i in 6" :key="i" class="bg-white rounded-xl overflow-hidden shadow-sm">
+            <div class="aspect-video bg-gray-200 animate-pulse"/>
+            <div class="p-5 space-y-3">
+              <div class="h-6 bg-gray-200 rounded animate-pulse"/>
+              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"/>
+              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"/>
+            </div>
+          </div>
+        </div>
+
         <!-- Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <BlogCard
             v-for="post in filteredPosts"
             :key="post.id"
@@ -83,7 +95,7 @@
 
         <!-- Empty State -->
         <div
-          v-if="filteredPosts.length === 0"
+          v-if="!loading && filteredPosts.length === 0"
           class="text-center py-16"
         >
           <svg class="w-24 h-24 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -121,110 +133,42 @@ useHead({
 
 const searchQuery = ref('')
 const sortBy = ref<'latest' | 'popular'>('latest')
-const hasMore = ref(true)
+const hasMore = ref(false)
+const loading = ref(true)
+const posts = ref<any[]>([])
 
-// Mock data - will be replaced with Firebase
-const posts = ref([
-  {
-    id: '1',
-    title: 'อาหารอะไรดีต่อสุนัข?',
-    slug: 'best-food-for-dogs',
-    excerpt: 'อาหารหลากหลายประเภทมีสารอาหารที่ต่างกัน มาดูกันว่าอาหารแบบไหนดีที่สุดสำหรับสุนัข',
-    featuredImage: '/images/blogs/blog1.jpg',
-    publishedAt: '2024-11-25',
-    createdAt: '2024-11-25',
-    viewCount: 336,
-    tags: ['อาหาร', 'สุนัข', 'สุขภาพ']
-  },
-  {
-    id: '2',
-    title: 'พาสุนัขไปทะเลดีอย่างไร?',
-    slug: 'taking-dogs-to-beach',
-    excerpt: 'เคล็ดลับและข้อควรระวังในการพาสุนัขไปเที่ยวทะเล',
-    featuredImage: '/images/blogs/blog2.jpg',
-    publishedAt: '2024-11-24',
-    createdAt: '2024-11-24',
-    viewCount: 289,
-    tags: ['ท่องเที่ยว', 'สุนัข', 'ทะเล']
-  },
-  {
-    id: '3',
-    title: 'อาการหายใจหอบของสุนัข',
-    slug: 'dog-breathing-problems',
-    excerpt: 'ทำไมสุนัขถึงหายใจหอบ และควรรับมืออย่างไร',
-    featuredImage: '/images/blogs/blog3.jpg',
-    publishedAt: '2024-11-23',
-    createdAt: '2024-11-23',
-    viewCount: 412,
-    tags: ['สุขภาพ', 'สุนัข']
-  },
-  {
-    id: '4',
-    title: 'กฎหมายการเลี้ยงสัตว์ปี 2567',
-    slug: 'pet-law-2024',
-    excerpt: 'สิ่งที่เจ้าของสัตว์เลี้ยงควรรู้เกี่ยวกับกฎหมายฉบับใหม่',
-    featuredImage: '/images/blogs/blog4.jpg',
-    publishedAt: '2024-11-22',
-    createdAt: '2024-11-22',
-    viewCount: 521,
-    tags: ['กฎหมาย', 'สัตว์เลี้ยง']
-  },
-  {
-    id: '5',
-    title: 'วิธีฝึกสุนัขให้เชื่อฟัง',
-    slug: 'dog-training-tips',
-    excerpt: 'เทคนิคและวิธีการฝึกสุนัขให้เชื่อฟังและมีพฤติกรรมที่ดี',
-    featuredImage: '/images/blogs/blog5.jpg',
-    publishedAt: '2024-11-21',
-    createdAt: '2024-11-21',
-    viewCount: 398,
-    tags: ['การฝึก', 'สุนัข', 'พฤติกรรม']
-  },
-  {
-    id: '6',
-    title: 'อาหารห้ามให้แมว 10 อย่าง',
-    slug: 'dangerous-foods-for-cats',
-    excerpt: 'อาหารที่อันตรายต่อแมวที่คุณควรหลีกเลี่ยง',
-    featuredImage: '/images/blogs/blog6.jpg',
-    publishedAt: '2024-11-20',
-    createdAt: '2024-11-20',
-    viewCount: 445,
-    tags: ['อาหาร', 'แมว', 'สุขภาพ']
-  },
-  {
-    id: '7',
-    title: 'เตรียมตัวพาสัตว์เลี้ยงขึ้นเครื่องบิน',
-    slug: 'flying-with-pets',
-    excerpt: 'ขั้นตอนและเอกสารที่จำเป็นในการพาสัตว์เลี้ยงขึ้นเครื่องบิน',
-    featuredImage: '/images/blogs/blog7.jpg',
-    publishedAt: '2024-11-19',
-    createdAt: '2024-11-19',
-    viewCount: 567,
-    tags: ['ท่องเที่ยว', 'เครื่องบิน', 'สัตว์เลี้ยง']
-  },
-  {
-    id: '8',
-    title: 'วัคซีนสุนัขที่จำเป็นต้องฉีด',
-    slug: 'essential-dog-vaccines',
-    excerpt: 'รายการวัคซีนสำคัญที่สุนัขทุกตัวควรได้รับ',
-    featuredImage: '/images/blogs/blog8.jpg',
-    publishedAt: '2024-11-18',
-    createdAt: '2024-11-18',
-    viewCount: 623,
-    tags: ['สุขภาพ', 'วัคซีน', 'สุนัข']
-  },
-  {
-    id: '9',
-    title: 'ดูแลแมวอ้วนให้ผอม',
-    slug: 'cat-weight-loss',
-    excerpt: 'วิธีการลดน้ำหนักแมวอย่างปลอดภัยและมีประสิทธิภาพ',
-    featuredImage: '/images/blogs/blog9.jpg',
-    publishedAt: '2024-11-17',
-    createdAt: '2024-11-17',
-    viewCount: 388,
-    tags: ['สุขภาพ', 'แมว', 'น้ำหนัก']
+// Load blogs from API (avoids Firestore index issues)
+const loadBlogs = async () => {
+  try {
+    loading.value = true
+    const response = await $fetch('/api/blogs', {
+      params: { limit: 50, status: 'published' }
+    }) as any
+
+    let blogs = response.data || []
+
+    // Sort by popular if selected
+    if (sortBy.value === 'popular') {
+      blogs = blogs.sort((a: any, b: any) => (b.viewCount || 0) - (a.viewCount || 0))
+    }
+
+    posts.value = blogs
+  } catch (err) {
+    console.error('Error loading blogs:', err)
+  } finally {
+    loading.value = false
   }
-])
+}
+
+// Watch sort change
+watch(sortBy, () => {
+  loadBlogs()
+})
+
+// Load on mount
+onMounted(() => {
+  loadBlogs()
+})
 
 const filteredPosts = computed(() => {
   let result = [...posts.value]
@@ -232,18 +176,12 @@ const filteredPosts = computed(() => {
   // Search filter
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
-    result = result.filter(post =>
-      post.title.toLowerCase().includes(query) ||
-      post.excerpt.toLowerCase().includes(query) ||
-      post.tags.some(tag => tag.toLowerCase().includes(query))
-    )
-  }
-
-  // Sort
-  if (sortBy.value === 'latest') {
-    result.sort((a, b) => new Date(b.publishedAt || b.createdAt).getTime() - new Date(a.publishedAt || a.createdAt).getTime())
-  } else if (sortBy.value === 'popular') {
-    result.sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
+    result = result.filter((post: any) => {
+      const titleMatch = post.title?.toLowerCase().includes(query)
+      const excerptMatch = post.excerpt?.toLowerCase().includes(query)
+      const tagsMatch = post.tags?.some((tag: string) => tag.toLowerCase().includes(query))
+      return titleMatch || excerptMatch || tagsMatch
+    })
   }
 
   return result

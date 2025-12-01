@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Search Header -->
-    <section class="bg-gradient-to-r from-red-500 to-pink-500 text-white py-12">
+    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-12">
       <div class="container-custom">
         <h1 class="text-3xl md:text-4xl font-bold mb-6">ผลการค้นหา</h1>
 
@@ -42,7 +42,7 @@
             <div class="flex items-end">
               <button
                 type="submit"
-                class="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                class="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
               >
                 ค้นหา
               </button>
@@ -159,7 +159,7 @@
               <!-- Clear Filters -->
               <button
                 @click="clearFilters"
-                class="w-full text-sm text-red-500 hover:text-red-600 font-medium"
+                class="w-full text-sm text-primary-500 hover:text-primary-600 font-medium"
               >
                 ล้างตัวกรอง
               </button>
@@ -174,7 +174,7 @@
                 <h2 class="text-2xl font-bold text-gray-900">
                   <template v-if="searchParams.keyword || searchParams.province">
                     ผลการค้นหา
-                    <span v-if="searchParams.keyword" class="text-red-500">"{{ searchParams.keyword }}"</span>
+                    <span v-if="searchParams.keyword" class="text-primary-500">"{{ searchParams.keyword }}"</span>
                     <span v-if="searchParams.province">ใน{{ searchParams.province }}</span>
                   </template>
                   <template v-else>
@@ -182,7 +182,7 @@
                   </template>
                 </h2>
                 <p class="text-gray-600 mt-1">
-                  พบ <span class="font-bold text-red-500">{{ filteredResults.length }}</span> ที่พัก
+                  พบ <span class="font-bold text-primary-500">{{ filteredResults.length }}</span> ที่พัก
                 </p>
               </div>
 

@@ -17,11 +17,24 @@ export const useProvinces = () => {
    * ดึงจังหวัดยอดนิยม (เรียงตาม hotelCount)
    */
   const getFeaturedProvinces = async (limitCount = 8) => {
-    return await getCollection(
-      'provinces',
-      orderBy('hotelCount', 'desc'),
-      limit(limitCount)
-    )
+    try {
+      // ลองดึงแบบเรียงตาม hotelCount
+      const result = await getCollection(
+        'provinces',
+        orderBy('hotelCount', 'desc'),
+        limit(limitCount)
+      )
+      console.log('getFeaturedProvinces result:', result.length, 'items')
+      return result
+    } catch (err) {
+      console.error('getFeaturedProvinces error, using fallback:', err)
+      // Fallback: ดึงโดยไม่เรียง แล้ว sort ใน client
+      const all = await getCollection('provinces')
+      console.log('Fallback: got', all.length, 'provinces')
+      return all
+        .sort((a: any, b: any) => (b.hotelCount || 0) - (a.hotelCount || 0))
+        .slice(0, limitCount)
+    }
   }
 
   /**

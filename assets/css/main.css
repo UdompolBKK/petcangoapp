@@ -4,6 +4,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   CSS Custom Properties - PetCanGo CI Colors
+   แก้ไขสีที่นี่เพื่ออัพเดททั้งเว็บไซต์
+   ============================================ */
+:root {
+  /* Primary Color (Pink) */
+  --color-primary: #EC4798;
+  --color-primary-light: #F472B6;
+  --color-primary-dark: #DB2777;
+
+  /* Secondary Color (Orange) */
+  --color-secondary: #FF9502;
+  --color-secondary-light: #FBBF24;
+  --color-secondary-dark: #F59E0B;
+
+  /* Gradient */
+  --gradient-brand: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  --gradient-brand-reverse: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+}
+
 @layer base {
   body {
     @apply font-sans text-gray-900;
@@ -11,31 +31,93 @@
 }
 
 @layer components {
+  /* ============================================
+     Button Components with CI Colors
+     ============================================ */
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-colors duration-200;
+    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200;
   }
 
   .btn-primary {
-    @apply bg-red-500 hover:bg-red-600 text-white;
+    @apply bg-primary-500 hover:bg-primary-600 text-white shadow-sm hover:shadow-md;
   }
 
   .btn-secondary {
-    @apply bg-green-500 hover:bg-green-600 text-white;
+    @apply bg-secondary-500 hover:bg-secondary-600 text-white shadow-sm hover:shadow-md;
+  }
+
+  .btn-gradient {
+    background: var(--gradient-brand);
+    @apply text-white shadow-sm hover:shadow-md hover:opacity-90;
   }
 
   .btn-outline {
-    @apply border-2 border-gray-300 hover:border-gray-400 text-gray-700;
+    @apply border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white;
   }
 
+  .btn-outline-secondary {
+    @apply border-2 border-secondary-500 text-secondary-500 hover:bg-secondary-500 hover:text-white;
+  }
+
+  /* ============================================
+     Form Components
+     ============================================ */
   .input {
-    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent;
   }
 
+  /* ============================================
+     Card Components
+     ============================================ */
   .card {
     @apply bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-200 hover:shadow-xl;
   }
 
+  /* ============================================
+     Container
+     ============================================ */
   .container-custom {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* ============================================
+     Gradient Backgrounds - CI Colors
+     ============================================ */
+  .bg-brand-gradient {
+    background: var(--gradient-brand);
+  }
+
+  .bg-brand-gradient-reverse {
+    background: var(--gradient-brand-reverse);
+  }
+
+  /* Text gradient effect */
+  .text-brand-gradient {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* ============================================
+     Link Styles
+     ============================================ */
+  .link-primary {
+    @apply text-primary-500 hover:text-primary-600 transition-colors;
+  }
+
+  .link-secondary {
+    @apply text-secondary-500 hover:text-secondary-600 transition-colors;
+  }
+
+  /* ============================================
+     Badge Styles
+     ============================================ */
+  .badge-primary {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800;
+  }
+
+  .badge-secondary {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-secondary-100 text-secondary-800;
   }
 }

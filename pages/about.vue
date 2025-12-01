@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-red-500 to-pink-500 text-white py-20">
+    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-20">
       <div class="container-custom">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl md:text-5xl font-bold mb-6">เกี่ยวกับ PetCanGo</h1>
@@ -29,8 +29,8 @@
           <!-- Features Grid -->
           <div class="grid md:grid-cols-3 gap-8 mb-16">
             <div class="text-center p-6 bg-white rounded-lg shadow-md">
-              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                 </svg>
               </div>
@@ -39,8 +39,8 @@
             </div>
 
             <div class="text-center p-6 bg-white rounded-lg shadow-md">
-              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
@@ -49,8 +49,8 @@
             </div>
 
             <div class="text-center p-6 bg-white rounded-lg shadow-md">
-              <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
               </div>
@@ -84,8 +84,8 @@
             <div class="grid md:grid-cols-2 gap-6">
               <div class="flex gap-4">
                 <div class="flex-shrink-0">
-                  <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                     </svg>
                   </div>
@@ -98,8 +98,8 @@
 
               <div class="flex gap-4">
                 <div class="flex-shrink-0">
-                  <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
                   </div>
@@ -112,8 +112,8 @@
 
               <div class="flex gap-4">
                 <div class="flex-shrink-0">
-                  <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
                     </svg>
                   </div>
@@ -126,8 +126,8 @@
 
               <div class="flex gap-4">
                 <div class="flex-shrink-0">
-                  <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <svg class="w-6 h-6 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div class="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
+                    <svg class="w-6 h-6 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
                     </svg>
                   </div>
@@ -141,10 +141,10 @@
           </div>
 
           <!-- CTA -->
-          <div class="bg-gradient-to-r from-red-500 to-pink-500 rounded-lg p-8 text-center text-white">
+          <div class="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg p-8 text-center text-white">
             <h2 class="text-3xl font-bold mb-4">พร้อมเริ่มต้นการเดินทางแล้วหรือยัง?</h2>
             <p class="text-xl mb-6 text-white/90">ค้นหาที่พักที่เหมาะสมสำหรับคุณและสัตว์เลี้ยงของคุณวันนี้</p>
-            <NuxtLink to="/" class="inline-block bg-white text-red-500 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors">
+            <NuxtLink to="/" class="inline-block bg-white text-primary-500 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors">
               เริ่มค้นหาที่พัก
             </NuxtLink>
           </div>

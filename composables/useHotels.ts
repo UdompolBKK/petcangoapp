@@ -27,17 +27,28 @@ export const useHotels = () => {
    * ดึงที่พักใหม่ล่าสุด
    */
   const getNewHotels = async (limitCount = 8) => {
-    // ดึงข้อมูลโดยใช้ orderBy อย่างเดียว แล้ว filter ใน JavaScript
-    const allHotels = await getCollection(
-      'hotels',
-      orderBy('createdAt', 'desc'),
-      limit(limitCount * 2) // ดึงมากกว่าที่ต้องการเผื่อ filter
-    )
-
-    // Filter เฉพาะ published และจำกัดจำนวน
-    return allHotels
-      .filter((hotel: any) => hotel.status === 'published')
-      .slice(0, limitCount)
+    try {
+      const allHotels = await getCollection(
+        'hotels',
+        orderBy('createdAt', 'desc'),
+        limit(limitCount * 2)
+      )
+      return allHotels
+        .filter((hotel: any) => hotel.status === 'published')
+        .slice(0, limitCount)
+    } catch (err) {
+      console.error('getNewHotels error, using fallback:', err)
+      // Fallback: ดึงทั้งหมดแล้ว sort ใน client
+      const allHotels = await getCollection('hotels')
+      return allHotels
+        .filter((hotel: any) => hotel.status === 'published')
+        .sort((a: any, b: any) => {
+          const dateA = a.createdAt?.toDate?.() || new Date(a.createdAt) || new Date(0)
+          const dateB = b.createdAt?.toDate?.() || new Date(b.createdAt) || new Date(0)
+          return dateB.getTime() - dateA.getTime()
+        })
+        .slice(0, limitCount)
+    }
   }
 
   /**
@@ -59,20 +70,38 @@ export const useHotels = () => {
   }
 
   /**
-   * ดึงที่พักตาม featured flag
+   * ดึงที่พักตาม featured flag (isFeatured)
    */
   const getFeaturedHotels = async (limitCount = 8) => {
-    // ดึงข้อมูลโดยใช้ orderBy อย่างเดียว แล้ว filter ใน JavaScript
-    const allHotels = await getCollection(
-      'hotels',
-      orderBy('viewCount', 'desc'),
-      limit(limitCount * 3) // ดึงมากกว่าที่ต้องการเผื่อ filter
-    )
+    try {
+      const allHotels = await getCollection(
+        'hotels',
+        orderBy('createdAt', 'desc'),
+        limit(limitCount * 10)
+      )
+      // Filter by isFeatured (the field name used in backend)
+      const featured = allHotels
+        .filter((hotel: any) => hotel.status === 'published' && hotel.isFeatured === true)
+        .slice(0, limitCount)
 
-    // Filter เฉพาะ published และ featured
-    return allHotels
-      .filter((hotel: any) => hotel.status === 'published' && hotel.featured === true)
-      .slice(0, limitCount)
+      // If no featured hotels found, return popular ones as fallback
+      if (featured.length === 0) {
+        return allHotels
+          .filter((hotel: any) => hotel.status === 'published')
+          .sort((a: any, b: any) => (b.viewCount || 0) - (a.viewCount || 0))
+          .slice(0, limitCount)
+      }
+
+      return featured
+    } catch (err) {
+      console.error('getFeaturedHotels error, using fallback:', err)
+      // Fallback: ดึงทั้งหมดแล้ว sort ใน client
+      const allHotels = await getCollection('hotels')
+      return allHotels
+        .filter((hotel: any) => hotel.status === 'published')
+        .sort((a: any, b: any) => (b.viewCount || 0) - (a.viewCount || 0))
+        .slice(0, limitCount)
+    }
   }
 
   /**
