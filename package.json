@@ -1,0 +1,44 @@
+{
+  "name": "petcangoapp",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "migrate:test": "node scripts/test-connection.js",
+    "migrate:all": "node scripts/migrate-all.js",
+    "migrate:facilities": "node scripts/migrate-facilities.js",
+    "migrate:provinces": "node scripts/migrate-provinces.js",
+    "migrate:blogs": "node scripts/migrate-blogs.js",
+    "migrate:hotels": "node scripts/migrate-hotels.js",
+    "migrate:images": "node scripts/migrate-images.js",
+    "migrate:pageviews": "node scripts/migrate-pageviews.js",
+    "storage:reorganize": "node scripts/reorganize-storage.js",
+    "cleanup": "node scripts/cleanup-firestore.js",
+    "update:urls": "node scripts/update-image-urls.cjs"
+  },
+  "dependencies": {
+    "@nuxt/icon": "^1.9.3",
+    "@nuxt/ui": "^4.2.1",
+    "firebase": "^10.14.1",
+    "firebase-admin": "^12.7.0",
+    "nuxt": "^3.14.1592",
+    "swiper": "^11.1.15",
+    "vue": "latest",
+    "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "autoprefixer": "^10.4.20",
+    "mysql2": "^3.11.5",
+    "postcss": "^8.4.49",
+    "sass": "^1.94.2",
+    "sass-loader": "^16.0.6",
+    "tailwindcss": "^3.4.17",
+    "typescript": "latest",
+    "vue-tsc": "latest"
+  }
+}

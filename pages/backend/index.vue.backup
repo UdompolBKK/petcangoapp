@@ -1,0 +1,326 @@
+<template>
+  <div class="min-h-screen bg-gray-100">
+    <!-- Top Navigation -->
+    <nav class="bg-white shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <h1 class="text-2xl font-bold text-gray-900">🐾 PetCanGo Admin</h1>
+          </div>
+          <div class="flex items-center space-x-4">
+            <span class="text-sm text-gray-600">{{ user?.email }}</span>
+            <button
+              @click="handleLogout"
+              class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            >
+              ออกจากระบบ
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Welcome Section -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Dashboard</h2>
+        <p class="text-gray-600">จัดการข้อมูลระบบ PetCanGo</p>
+      </div>
+
+      <!-- Loading State -->
+      <div v-if="loading" class="flex justify-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-red-500"></div>
+      </div>
+
+      <!-- Error State -->
+      <div v-else-if="error" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+        {{ error }}
+      </div>
+
+      <!-- Stats Grid -->
+      <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 mb-8">
+        <!-- Hotels Stats -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Hotels</p>
+              <p class="text-3xl font-bold text-gray-900">{{ stats.hotels }}</p>
+            </div>
+            <div class="bg-blue-100 p-3 rounded-full">
+              <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+          </div>
+          <NuxtLink
+            to="/backend/hotels"
+            class="mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium inline-block"
+          >
+            จัดการ Hotels →
+          </NuxtLink>
+        </div>
+
+        <!-- Blogs Stats -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Blogs</p>
+              <p class="text-3xl font-bold text-gray-900">{{ stats.blogs }}</p>
+            </div>
+            <div class="bg-green-100 p-3 rounded-full">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+              </svg>
+            </div>
+          </div>
+          <NuxtLink
+            to="/backend/blogs"
+            class="mt-4 text-sm text-green-600 hover:text-green-700 font-medium inline-block"
+          >
+            จัดการ Blogs →
+          </NuxtLink>
+        </div>
+
+        <!-- Provinces Stats -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Provinces</p>
+              <p class="text-3xl font-bold text-gray-900">{{ stats.provinces }}</p>
+            </div>
+            <div class="bg-purple-100 p-3 rounded-full">
+              <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+          </div>
+          <NuxtLink
+            to="/backend/provinces"
+            class="mt-4 text-sm text-purple-600 hover:text-purple-700 font-medium inline-block"
+          >
+            จัดการ Provinces →
+          </NuxtLink>
+        </div>
+
+        <!-- Facilities Stats -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Facilities</p>
+              <p class="text-3xl font-bold text-gray-900">{{ stats.facilities }}</p>
+            </div>
+            <div class="bg-yellow-100 p-3 rounded-full">
+              <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            </div>
+          </div>
+          <NuxtLink
+            to="/backend/facilities"
+            class="mt-4 text-sm text-yellow-600 hover:text-yellow-700 font-medium inline-block"
+          >
+            จัดการ Facilities →
+          </NuxtLink>
+        </div>
+
+        <!-- Users Stats -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Users</p>
+              <p class="text-3xl font-bold text-gray-900">{{ stats.users }}</p>
+            </div>
+            <div class="bg-orange-100 p-3 rounded-full">
+              <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+              </svg>
+            </div>
+          </div>
+          <NuxtLink
+            to="/backend/users"
+            class="mt-4 text-sm text-orange-600 hover:text-orange-700 font-medium inline-block"
+          >
+            จัดการ Users →
+          </NuxtLink>
+        </div>
+
+        <!-- Reviews Stats -->
+        <div class="bg-white rounded-lg shadow p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-gray-600">Reviews</p>
+              <p class="text-3xl font-bold text-gray-900">{{ stats.reviews }}</p>
+            </div>
+            <div class="bg-pink-100 p-3 rounded-full">
+              <svg class="w-8 h-8 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+              </svg>
+            </div>
+          </div>
+          <NuxtLink
+            to="/backend/reviews"
+            class="mt-4 text-sm text-pink-600 hover:text-pink-700 font-medium inline-block"
+          >
+            จัดการ Reviews →
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Super Admin Section (Only for Super Admin) -->
+      <div v-if="isSuperAdmin" class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow p-6 mb-8">
+        <div class="flex items-center justify-between">
+          <div class="text-white">
+            <h3 class="text-xl font-bold mb-2">Super Admin Tools</h3>
+            <p class="text-purple-100">เครื่องมือสำหรับ Super Admin เท่านั้น</p>
+          </div>
+          <NuxtLink
+            to="/backend/admins"
+            class="bg-white hover:bg-gray-100 text-purple-600 font-semibold px-6 py-3 rounded-lg transition-colors flex items-center space-x-2"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <span>จัดการ Admin</span>
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="bg-white rounded-lg shadow p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <NuxtLink
+            to="/backend/hotels/create"
+            class="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 hover:bg-blue-50 transition-colors"
+          >
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span class="font-medium text-gray-700">เพิ่ม Hotel</span>
+          </NuxtLink>
+
+          <NuxtLink
+            to="/backend/blogs/create"
+            class="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 hover:bg-green-50 transition-colors"
+          >
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            <span class="font-medium text-gray-700">เพิ่ม Blog</span>
+          </NuxtLink>
+
+          <NuxtLink
+            to="/"
+            target="_blank"
+            class="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors"
+          >
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            <span class="font-medium text-gray-700">ดูเว็บไซต์</span>
+          </NuxtLink>
+
+          <button
+            @click="refreshStats"
+            class="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-colors"
+          >
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            <span class="font-medium text-gray-700">รีเฟรช</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+// Protect this page with admin middleware
+definePageMeta({
+  middleware: ['admin']
+})
+
+// SEO
+useHead({
+  title: 'Backend Dashboard - PetCanGo',
+  meta: [
+    {
+      name: 'robots',
+      content: 'noindex, nofollow'
+    }
+  ]
+})
+
+const { user, logout, isSuperAdmin } = useAuth()
+
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+const stats = ref({
+  hotels: 0,
+  blogs: 0,
+  provinces: 0,
+  facilities: 0,
+  users: 0,
+  reviews: 0
+})
+
+/**
+ * Load statistics
+ */
+const loadStats = async () => {
+  try {
+    loading.value = true
+    error.value = null
+
+    const [hotelsRes, blogsRes, provincesRes, facilitiesRes, usersRes, reviewsRes] = await Promise.all([
+      $fetch('/api/hotels'),
+      $fetch('/api/blogs'),
+      $fetch('/api/provinces'),
+      $fetch('/api/facilities'),
+      $fetch('/api/users'),
+      $fetch('/api/reviews', { query: { limit: 1000 } })
+    ])
+
+    stats.value = {
+      hotels: hotelsRes.total || 0,
+      blogs: blogsRes.total || 0,
+      provinces: provincesRes.total || 0,
+      facilities: facilitiesRes.total || 0,
+      users: usersRes.total || 0,
+      reviews: reviewsRes.data?.length || 0
+    }
+
+  } catch (err: any) {
+    console.error('Failed to load stats:', err)
+    error.value = 'ไม่สามารถโหลดข้อมูลสถิติได้'
+  } finally {
+    loading.value = false
+  }
+}
+
+/**
+ * Refresh statistics
+ */
+const refreshStats = () => {
+  loadStats()
+}
+
+/**
+ * Handle logout
+ */
+const handleLogout = async () => {
+  const success = await logout()
+  if (success) {
+    navigateTo('/login')
+  }
+}
+
+// Load stats on mount
+onMounted(() => {
+  loadStats()
+})
+</script>

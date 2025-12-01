@@ -1,0 +1,11 @@
+{
+  "buildCommand": "nuxt build",
+  "outputDirectory": ".output",
+  "framework": "nuxt",
+  "regions": ["sin1"],
+  "functions": {
+    "**/*.js": {
+      "maxDuration": 30
+    }
+  }
+}

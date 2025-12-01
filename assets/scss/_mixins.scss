@@ -1,0 +1,257 @@
+// ==========================================
+// Backend Mixins & Utilities
+// ==========================================
+
+@import 'variables';
+
+// Card Component
+@mixin card-base {
+  background-color: $bg-secondary;
+  border: 1px solid $border-primary;
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+  transition: border-color $transition-base;
+}
+
+@mixin card-hover($color: $brand-emerald) {
+  &:hover {
+    border-color: rgba($color, 0.5);
+  }
+}
+
+// Button Variants
+@mixin btn-primary {
+  background-color: $brand-emerald;
+  color: $text-primary;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  transition: background-color $transition-base;
+
+  &:hover {
+    background-color: darken($brand-emerald, 10%);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-secondary {
+  background-color: $bg-tertiary;
+  color: $text-secondary;
+  border: 1px solid $border-secondary;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  transition: all $transition-base;
+
+  &:hover {
+    background-color: $border-secondary;
+    color: $text-primary;
+  }
+}
+
+@mixin btn-danger {
+  background-color: $brand-red;
+  color: $text-primary;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  transition: background-color $transition-base;
+
+  &:hover {
+    background-color: darken($brand-red, 10%);
+  }
+}
+
+// Input/Form Elements
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  background-color: $bg-tertiary;
+  border: 1px solid $border-secondary;
+  border-radius: $radius-lg;
+  color: $text-secondary;
+  transition: all $transition-base;
+
+  &::placeholder {
+    color: $text-tertiary;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $brand-emerald;
+    box-shadow: 0 0 0 2px $emerald-20;
+  }
+}
+
+// Table Styles
+@mixin table-base {
+  width: 100%;
+  background-color: $bg-secondary;
+  border: 1px solid $border-primary;
+  border-radius: $radius-xl;
+  overflow: hidden;
+
+  thead {
+    background-color: $bg-tertiary;
+    border-bottom: 1px solid $border-primary;
+
+    th {
+      padding: $spacing-md $spacing-lg;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: $text-tertiary;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $border-primary;
+      transition: background-color $transition-base;
+
+      &:hover {
+        background-color: rgba($border-secondary, 0.5);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        padding: $spacing-md $spacing-lg;
+        color: $text-secondary;
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+// Badge/Tag Variants
+@mixin badge-base($bg, $text) {
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: $bg;
+  color: $text;
+}
+
+@mixin badge-emerald {
+  @include badge-base($emerald-10, $brand-emerald);
+}
+
+@mixin badge-blue {
+  @include badge-base($blue-10, $brand-blue);
+}
+
+@mixin badge-purple {
+  @include badge-base($purple-10, $brand-purple);
+}
+
+@mixin badge-yellow {
+  @include badge-base($yellow-10, $brand-yellow);
+}
+
+@mixin badge-red {
+  @include badge-base($red-10, $brand-red);
+}
+
+@mixin badge-gray {
+  @include badge-base($gray-10, $text-tertiary);
+}
+
+// Loading Spinner
+@mixin spinner($size: 3rem, $color: $brand-emerald) {
+  display: inline-block;
+  width: $size;
+  height: $size;
+  border: 2px solid transparent;
+  border-top-color: $color;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Responsive Breakpoints
+@mixin mobile {
+  @media (max-width: 640px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 641px) and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1025px) {
+    @content;
+  }
+}
+
+// Utility Classes
+.card {
+  @include card-base;
+}
+
+.card-hover-emerald {
+  @include card-hover($brand-emerald);
+}
+
+.card-hover-blue {
+  @include card-hover($brand-blue);
+}
+
+.card-hover-purple {
+  @include card-hover($brand-purple);
+}
+
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.btn-danger {
+  @include btn-danger;
+}
+
+.input-base {
+  @include input-base;
+}
+
+.badge-emerald {
+  @include badge-emerald;
+}
+
+.badge-blue {
+  @include badge-blue;
+}
+
+.badge-purple {
+  @include badge-purple;
+}
+
+.badge-yellow {
+  @include badge-yellow;
+}
+
+.badge-red {
+  @include badge-red;
+}
+
+.badge-gray {
+  @include badge-gray;
+}

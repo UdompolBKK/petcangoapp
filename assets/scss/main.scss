@@ -1,0 +1,340 @@
+// ==========================================
+// Main Backend Styles with Light/Dark Mode Support
+// ==========================================
+
+@import 'variables';
+@import 'mixins';
+
+// CSS Custom Properties for Light/Dark Mode
+:root {
+  // Dark Mode (Default)
+  --bg-primary: #0A0E1A;
+  --bg-secondary: #0F1419;
+  --bg-tertiary: #1A1F2E;
+
+  --border-primary: #1F2937;
+  --border-secondary: #374151;
+
+  --text-primary: #FFFFFF;
+  --text-secondary: #9CA3AF;
+  --text-tertiary: #6B7280;
+
+  --brand-emerald: #10B981;
+  --brand-blue: #3B82F6;
+  --brand-purple: #8B5CF6;
+  --brand-yellow: #F59E0B;
+  --brand-red: #EF4444;
+}
+
+// Light Mode
+[data-theme="light"], .light-mode {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F9FAFB;
+  --bg-tertiary: #F3F4F6;
+
+  --border-primary: #E5E7EB;
+  --border-secondary: #D1D5DB;
+
+  --text-primary: #111827;
+  --text-secondary: #4B5563;
+  --text-tertiary: #9CA3AF;
+
+  // Brand colors stay the same
+}
+
+// Backend Utility Classes
+.backend-container {
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+// Card Styles
+.backend-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+  transition: border-color $transition-base;
+
+  &.hover-emerald:hover {
+    border-color: rgba($brand-emerald, 0.5);
+  }
+
+  &.hover-blue:hover {
+    border-color: rgba($brand-blue, 0.5);
+  }
+
+  &.hover-purple:hover {
+    border-color: rgba($brand-purple, 0.5);
+  }
+
+  &.hover-yellow:hover {
+    border-color: rgba($brand-yellow, 0.5);
+  }
+}
+
+// Stats Card
+.stats-card {
+  @extend .backend-card;
+  display: flex;
+  flex-direction: column;
+
+  .icon-wrapper {
+    width: 3rem;
+    height: 3rem;
+    border-radius: $radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $spacing-md;
+
+    &.emerald {
+      background-color: $emerald-10;
+      color: $brand-emerald;
+    }
+
+    &.blue {
+      background-color: $blue-10;
+      color: $brand-blue;
+    }
+
+    &.purple {
+      background-color: $purple-10;
+      color: $brand-purple;
+    }
+
+    &.yellow {
+      background-color: $yellow-10;
+      color: $brand-yellow;
+    }
+  }
+
+  .stats-label {
+    color: var(--text-tertiary);
+    font-size: 0.875rem;
+    margin-bottom: $spacing-xs;
+  }
+
+  .stats-value {
+    color: var(--text-primary);
+    font-size: 2rem;
+    font-weight: 700;
+  }
+}
+
+// Backend Table
+.backend-table {
+  width: 100%;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: $radius-xl;
+  overflow: hidden;
+
+  thead {
+    background-color: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-primary);
+
+    th {
+      padding: $spacing-md $spacing-lg;
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid var(--border-primary);
+      transition: background-color $transition-base;
+
+      &:hover {
+        background-color: rgba(var(--border-secondary), 0.5);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+
+      td {
+        padding: $spacing-md $spacing-lg;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+    }
+  }
+}
+
+// Backend Form Elements
+.backend-input {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  border-radius: $radius-lg;
+  color: var(--text-secondary);
+  transition: all $transition-base;
+
+  &::placeholder {
+    color: var(--text-tertiary);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--brand-emerald);
+    box-shadow: 0 0 0 2px rgba($brand-emerald, 0.2);
+  }
+}
+
+.backend-select {
+  @extend .backend-input;
+  cursor: pointer;
+}
+
+// Backend Buttons
+.backend-btn {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  font-weight: 500;
+  transition: all $transition-base;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.btn-primary {
+    background-color: var(--brand-emerald);
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: darken($brand-emerald, 10%);
+    }
+  }
+
+  &.btn-secondary {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-secondary);
+
+    &:hover:not(:disabled) {
+      background-color: var(--border-secondary);
+      color: var(--text-primary);
+    }
+  }
+
+  &.btn-danger {
+    background-color: var(--brand-red);
+    color: white;
+
+    &:hover:not(:disabled) {
+      background-color: darken($brand-red, 10%);
+    }
+  }
+}
+
+// Backend Badges
+.backend-badge {
+  padding: $spacing-xs $spacing-sm;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  display: inline-flex;
+  align-items: center;
+
+  &.badge-emerald {
+    background-color: $emerald-10;
+    color: $brand-emerald;
+  }
+
+  &.badge-blue {
+    background-color: $blue-10;
+    color: $brand-blue;
+  }
+
+  &.badge-purple {
+    background-color: $purple-10;
+    color: $brand-purple;
+  }
+
+  &.badge-yellow {
+    background-color: $yellow-10;
+    color: $brand-yellow;
+  }
+
+  &.badge-red {
+    background-color: $red-10;
+    color: $brand-red;
+  }
+
+  &.badge-gray {
+    background-color: $gray-10;
+    color: var(--text-tertiary);
+  }
+}
+
+// Loading Spinner
+.backend-spinner {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid transparent;
+  border-top-color: var(--brand-emerald);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Empty State
+.backend-empty {
+  text-align: center;
+  padding: $spacing-2xl;
+  color: var(--text-tertiary);
+
+  svg {
+    margin: 0 auto $spacing-md;
+    opacity: 0.5;
+  }
+
+  .empty-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: $spacing-sm;
+  }
+
+  .empty-description {
+    color: var(--text-tertiary);
+  }
+}
+
+// Responsive Utilities
+@include mobile {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@include tablet {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+@include desktop {
+  .hide-desktop {
+    display: none !important;
+  }
+}

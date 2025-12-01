@@ -1,0 +1,168 @@
+<template>
+  <NuxtLink
+    :to="`/hotels/${getProvinceSlug(hotel.province)}/${hotel.slug || hotel.id}`"
+    class="block group bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden"
+  >
+    <!-- Image -->
+    <div class="relative overflow-hidden aspect-[4/3]">
+      <img
+        :src="hotel.mainImage || hotel.image || '/images/placeholder-hotel.jpg'"
+        :alt="hotel.name"
+        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        @error="handleImageError"
+      />
+
+      <!-- View Count Badge -->
+      <div
+        v-if="hotel.viewCount"
+        class="absolute top-3 left-3 bg-black/60 backdrop-blur-sm text-white px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 shadow-lg"
+      >
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+        </svg>
+        {{ formatNumber(hotel.viewCount) }}
+      </div>
+
+      <!-- Price Badge -->
+      <div
+        v-if="hotel.priceStart"
+        class="absolute top-3 right-3 bg-red-500 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg"
+      >
+        เริ่มต้น ฿{{ formatPrice(hotel.priceStart) }}
+      </div>
+
+      <!-- Province Badge -->
+      <div
+        v-if="getProvinceName(hotel.province)"
+        class="absolute bottom-3 left-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-full text-xs font-medium text-gray-800 shadow-md"
+      >
+        📍 {{ getProvinceName(hotel.province) }}
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-4">
+      <!-- Hotel Name -->
+      <h3 class="text-lg font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-red-500 transition-colors">
+        {{ hotel.name }}
+      </h3>
+
+      <!-- Short Description -->
+      <p
+        v-if="hotel.shortDescription"
+        class="text-sm text-gray-600 mb-3 line-clamp-2"
+      >
+        {{ hotel.shortDescription }}
+      </p>
+
+      <!-- Facilities Icons (if available) -->
+      <div
+        v-if="getFacilityNames(hotel.facilities).length > 0"
+        class="flex flex-wrap gap-2 mb-3"
+      >
+        <span
+          v-for="(facility, index) in getFacilityNames(hotel.facilities).slice(0, 3)"
+          :key="index"
+          class="inline-flex items-center text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded-full"
+        >
+          <svg class="w-3 h-3 mr-1 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          {{ facility }}
+        </span>
+        <span
+          v-if="getFacilityNames(hotel.facilities).length > 3"
+          class="inline-flex items-center text-xs text-gray-500 px-2 py-1"
+        >
+          +{{ getFacilityNames(hotel.facilities).length - 3 }} อื่นๆ
+        </span>
+      </div>
+
+      <!-- Footer: Location & Date -->
+      <div class="flex items-center justify-between text-xs text-gray-500 pt-3 border-t border-gray-100">
+        <div class="flex items-center font-medium">
+          <svg class="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          {{ getProvinceName(hotel.province) }}
+        </div>
+        <div v-if="hotel.createdAt" class="text-gray-400">
+          {{ formatDate(hotel.createdAt) }}
+        </div>
+      </div>
+    </div>
+  </NuxtLink>
+</template>
+
+<script setup lang="ts">
+interface Province {
+  id: string
+  name: string
+  slug?: string
+}
+
+interface Hotel {
+  id: string
+  slug?: string
+  name: string
+  mainImage?: string
+  image?: string
+  priceStart?: number
+  province: Province | string
+  shortDescription?: string
+  facilities?: any[]
+  createdAt?: string
+  viewCount?: number
+}
+
+interface Props {
+  hotel: Hotel
+}
+
+const props = defineProps<Props>()
+
+const formatPrice = (price: number): string => {
+  return price.toLocaleString('th-TH')
+}
+
+const formatNumber = (num: number): string => {
+  return num.toLocaleString('th-TH')
+}
+
+const formatDate = (date: string): string => {
+  const d = new Date(date)
+  return d.toLocaleDateString('th-TH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
+
+const getProvinceName = (province: Province | string): string => {
+  if (typeof province === 'string') {
+    return province
+  }
+  return province?.name || ''
+}
+
+const getProvinceSlug = (province: Province | string): string => {
+  if (typeof province === 'string') {
+    return province.toLowerCase().replace(/\s+/g, '-')
+  }
+  return province?.slug || province?.id || ''
+}
+
+const getFacilityNames = (facilities: any[]): string[] => {
+  if (!facilities || !Array.isArray(facilities)) return []
+  return facilities.map(f => {
+    if (typeof f === 'string') return f
+    return f?.name || f?.label || ''
+  }).filter(Boolean)
+}
+
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  img.src = '/common/nouser.jpg'
+}
+</script>

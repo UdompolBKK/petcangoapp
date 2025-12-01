@@ -1,0 +1,38 @@
+import { adminFirestore } from '~/server/utils/firebase-admin'
+
+export default defineEventHandler(async (event) => {
+  try {
+    const id = getRouterParam(event, 'id')
+    const body = await readBody(event)
+
+    if (!id) {
+      throw createError({ statusCode: 400, message: 'Blog ID is required' })
+    }
+
+    // TODO: ตรวจสอบ admin authentication
+
+    const db = adminFirestore()
+    const docRef = db.collection('blogs').doc(id)
+
+    const doc = await docRef.get()
+    if (!doc.exists) {
+      throw createError({ statusCode: 404, message: 'Blog not found' })
+    }
+
+    await docRef.update({
+      ...body,
+      updatedAt: new Date()
+    })
+
+    return {
+      success: true,
+      message: 'Blog updated successfully'
+    }
+
+  } catch (error: any) {
+    throw createError({
+      statusCode: error.statusCode || 500,
+      message: error.message || 'Failed to update blog'
+    })
+  }
+})
