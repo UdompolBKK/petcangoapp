@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-12">
+    <section class="bg-primary-500 text-white py-12">
       <div class="container-custom">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
@@ -10,7 +10,7 @@
           </div>
           <NuxtLink
             to="/my-hotels/create"
-            class="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-secondary-300 hover:text-primary-700 font-bold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg"
+            class="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-primary-100 hover:text-primary-700 font-bold py-3 px-6 rounded-xl transition-all duration-200 shadow-lg"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -255,7 +255,7 @@
           <p class="text-gray-500 mb-6">เริ่มต้นลงประกาศที่พักของคุณวันนี้</p>
           <NuxtLink
             to="/my-hotels/create"
-            class="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-xl transition-colors"
+            class="inline-flex items-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-md hover:shadow-lg"
           >
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -287,7 +287,7 @@
             <button
               @click="deleteHotel"
               :disabled="deleting"
-              class="flex-1 px-4 py-3 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-xl transition-colors disabled:opacity-50"
+              class="flex-1 px-4 py-3 bg-red-500 hover:bg-red-600 text-white font-medium rounded-xl transition-all disabled:opacity-50 shadow-md hover:shadow-lg"
             >
               {{ deleting ? 'กำลังลบ...' : 'ลบที่พัก' }}
             </button>

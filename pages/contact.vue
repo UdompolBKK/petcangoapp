@@ -44,7 +44,7 @@
               v-model="form.message"
               rows="5"
               required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
               placeholder="รายละเอียดที่ต้องการติดต่อ"
             />
           </div>
@@ -52,7 +52,7 @@
           <button
             type="submit"
             :disabled="sending"
-            class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-lg transition-colors disabled:opacity-50"
+            class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-3 px-6 rounded-lg transition-all disabled:opacity-50 shadow-md hover:shadow-lg"
           >
             {{ sending ? 'กำลังส่ง...' : 'ส่งข้อความ' }}
           </button>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Page Header -->
-    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-16">
+    <section class="bg-primary-500 text-white py-16">
       <div class="container-custom">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl md:text-5xl font-bold mb-4">

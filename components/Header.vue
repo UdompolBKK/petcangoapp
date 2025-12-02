@@ -4,7 +4,7 @@
       <div class="flex items-center justify-between py-4">
         <!-- Logo -->
         <NuxtLink to="/" class="flex items-center space-x-2 group">
-          <span class="text-2xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent group-hover:from-primary-600 group-hover:to-secondary-600 transition-all">🐾 PetCanGo</span>
+          <span class="text-2xl font-bold text-primary-500 group-hover:text-primary-600 transition-all">🐾 PetCanGo</span>
         </NuxtLink>
 
         <!-- Desktop Navigation -->
@@ -58,7 +58,8 @@
             </button>
             <NuxtLink
               to="/register"
-              class="btn btn-primary"
+              class="px-4 py-2 rounded-lg font-medium transition-all duration-200 text-white shadow-sm hover:shadow-lg"
+              style="background-color: #FF8E00;"
             >
               ลงทะเบียนฟรี
             </NuxtLink>
@@ -248,7 +249,8 @@
               </button>
               <NuxtLink
                 to="/register"
-                class="btn btn-primary w-full text-center"
+                class="w-full text-center px-4 py-2 rounded-lg font-medium transition-all duration-200 text-white shadow-sm hover:shadow-lg"
+                style="background-color: #FF8E00;"
                 @click="closeMobileMenu"
               >
                 ลงทะเบียนฟรี

@@ -29,7 +29,7 @@
         </div>
 
         <!-- Pro Plan -->
-        <div class="bg-gradient-to-br from-primary-500 to-secondary-500 text-white rounded-xl shadow-lg p-8 transform scale-105">
+        <div class="bg-primary-500 text-white rounded-xl shadow-lg p-8 transform scale-105">
           <div class="bg-yellow-400 text-yellow-900 text-xs font-bold px-3 py-1 rounded-full inline-block mb-4">แนะนำ</div>
           <h3 class="text-xl font-bold mb-2">Pro</h3>
           <p class="text-4xl font-bold mb-6">฿299 <span class="text-base font-normal opacity-80">/เดือน</span></p>

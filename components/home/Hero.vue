@@ -1,5 +1,5 @@
 <template>
-  <section class="relative bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-20">
+  <section class="relative bg-primary-500 text-white py-20">
     <div class="container-custom">
       <div class="max-w-3xl mx-auto text-center">
         <!-- Main Heading -->
@@ -57,7 +57,7 @@
             <!-- Search Button -->
             <button
               type="submit"
-              class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-8 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
+              class="w-full bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-8 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
             >
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>

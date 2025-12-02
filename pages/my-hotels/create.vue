@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-8">
+    <section class="bg-primary-500 text-white py-8">
       <div class="container-custom">
         <div class="flex items-center gap-4">
           <NuxtLink
@@ -381,7 +381,7 @@
                   <button
                     @click="removeImage(index)"
                     type="button"
-                    class="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                    class="absolute top-2 right-2 w-8 h-8 bg-primary-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -465,7 +465,7 @@
             <button
               type="submit"
               :disabled="submitting"
-              class="flex-1 inline-flex items-center justify-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-8 rounded-xl transition-colors disabled:opacity-50"
+              class="flex-1 inline-flex items-center justify-center gap-2 bg-primary-500 hover:bg-primary-600 text-white font-bold py-4 px-8 rounded-xl transition-all disabled:opacity-50 shadow-md hover:shadow-lg"
             >
               <svg v-if="submitting" class="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>

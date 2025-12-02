@@ -4,7 +4,8 @@ export default defineEventHandler(async (event) => {
   try {
     const query = getQuery(event)
     const limitCount = Number(query.limit) || 50
-    const status = query.status as string || 'published'
+    const status = query.status as string
+    const all = query.all === 'true' // ดึงทั้งหมดโดยไม่กรอง status
 
     const db = adminFirestore()
 
@@ -16,9 +17,10 @@ export default defineEventHandler(async (event) => {
       ...doc.data()
     })) as any[]
 
-    // Filter by status in JavaScript
-    if (status) {
-      blogs = blogs.filter((blog: any) => blog.status === status)
+    // Filter by status in JavaScript (ถ้าไม่ได้ขอ all)
+    if (!all) {
+      const filterStatus = status || 'published'
+      blogs = blogs.filter((blog: any) => blog.status === filterStatus)
     }
 
     // Sort by createdAt in JavaScript

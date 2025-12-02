@@ -14,45 +14,20 @@ export default {
         // ============================================
         // CI Colors - PetCanGo Brand
         // แก้ไขสีหลักที่นี่เพื่ออัพเดททั้งเว็บไซต์
+        // Main Color: #FF8E00 (Orange)
         // ============================================
-        brand: {
-          // Primary: Pink (#EC4798)
-          primary: '#EC4798',
-          'primary-light': '#F472B6',
-          'primary-dark': '#DB2777',
-          // Secondary: Orange (#FF9502)
-          secondary: '#FF9502',
-          'secondary-light': '#FBBF24',
-          'secondary-dark': '#F59E0B',
-          // Gradient colors
-          'gradient-from': '#EC4798',
-          'gradient-to': '#FF9502',
-        },
-        // Primary palette (Pink-based)
+        // Primary palette (Orange-based)
         primary: {
-          50: '#FDF2F8',
-          100: '#FCE7F3',
-          200: '#FBCFE8',
-          300: '#F9A8D4',
-          400: '#F472B6',
-          500: '#EC4798', // Main CI color
-          600: '#DB2777',
-          700: '#BE185D',
-          800: '#9D174D',
-          900: '#831843',
-        },
-        // Secondary palette (Orange-based)
-        secondary: {
-          50: '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A',
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#FF9502', // Main CI color
-          600: '#F59E0B',
-          700: '#D97706',
-          800: '#B45309',
-          900: '#92400E',
+          50: '#FFF7ED',
+          100: '#FFEDD5',
+          200: '#FED7AA',
+          300: '#FDBA74',
+          400: '#FB923C',
+          500: '#FF8E00', // Main CI color
+          600: '#E67E00',
+          700: '#C2410C',
+          800: '#9A3412',
+          900: '#7C2D12',
         },
         // เพิ่มสีที่ใช้ใน Dashboard
         success: {

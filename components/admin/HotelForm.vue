@@ -16,7 +16,7 @@
         <!-- Name -->
         <div>
           <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
-            ชื่อที่พัก <span class="text-red-500">*</span>
+            ชื่อที่พัก <span class="text-primary-500">*</span>
           </label>
           <input
             id="name"
@@ -51,7 +51,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label for="province" class="block text-sm font-medium text-gray-700 mb-2">
-              จังหวัด <span class="text-red-500">*</span>
+              จังหวัด <span class="text-primary-500">*</span>
             </label>
             <select
               id="province"
@@ -91,7 +91,7 @@
         <!-- Short Description -->
         <div>
           <label for="shortDescription" class="block text-sm font-medium text-gray-700 mb-2">
-            คำอธิบายสั้น <span class="text-red-500">*</span>
+            คำอธิบายสั้น <span class="text-primary-500">*</span>
           </label>
           <textarea
             id="shortDescription"
@@ -131,7 +131,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <label for="priceStart" class="block text-sm font-medium text-gray-700 mb-2">
-            ราคาเริ่มต้น (บาท/คืน) <span class="text-red-500">*</span>
+            ราคาเริ่มต้น (บาท/คืน) <span class="text-primary-500">*</span>
           </label>
           <input
             id="priceStart"
@@ -247,7 +247,7 @@
         <!-- Main Image -->
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2">
-            รูปหลัก <span class="text-red-500">*</span>
+            รูปหลัก <span class="text-primary-500">*</span>
           </label>
           <input
             type="file"
@@ -284,7 +284,7 @@
               <button
                 type="button"
                 @click="removeGalleryImage(index)"
-                class="absolute top-1 right-1 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                class="absolute top-1 right-1 bg-primary-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -310,7 +310,7 @@
             v-model="form.facilities"
             type="checkbox"
             :value="facility.value"
-            class="rounded text-red-500 focus:ring-red-500"
+            class="rounded text-primary-500 focus:ring-primary-500"
             :disabled="loading"
           />
           <span class="text-sm">{{ facility.label }}</span>

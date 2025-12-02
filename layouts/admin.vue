@@ -14,7 +14,7 @@
             </svg>
           </button>
           <NuxtLink to="/admin" class="flex items-center space-x-2">
-            <span class="text-xl font-bold text-red-500">🐾 PetCanGo Admin</span>
+            <span class="text-xl font-bold text-primary-500">🐾 PetCanGo Admin</span>
           </NuxtLink>
         </div>
 

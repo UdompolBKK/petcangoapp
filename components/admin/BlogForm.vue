@@ -16,7 +16,7 @@
         <!-- ชื่อบทความ -->
         <div>
           <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
-            ชื่อบทความ <span class="text-red-500">*</span>
+            ชื่อบทความ <span class="text-primary-500">*</span>
           </label>
           <input
             id="title"
@@ -50,7 +50,7 @@
         <!-- คำอธิบายสั้น -->
         <div>
           <label for="excerpt" class="block text-sm font-medium text-gray-700 mb-2">
-            คำอธิบายสั้น <span class="text-red-500">*</span>
+            คำอธิบายสั้น <span class="text-primary-500">*</span>
           </label>
           <textarea
             id="excerpt"
@@ -69,7 +69,7 @@
         <!-- เนื้อหาบทความ -->
         <div>
           <label for="content" class="block text-sm font-medium text-gray-700 mb-2">
-            เนื้อหาบทความ <span class="text-red-500">*</span>
+            เนื้อหาบทความ <span class="text-primary-500">*</span>
           </label>
           <textarea
             id="content"
@@ -93,7 +93,7 @@
 
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2">
-          รูปหน้าปก <span class="text-red-500">*</span>
+          รูปหน้าปก <span class="text-primary-500">*</span>
         </label>
         <input
           type="file"

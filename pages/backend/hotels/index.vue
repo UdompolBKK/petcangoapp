@@ -358,7 +358,7 @@
           v-model="rejectReason"
           rows="4"
           placeholder="เช่น ข้อมูลไม่ครบถ้วน, รูปภาพไม่ชัดเจน, ฯลฯ"
-          class="w-full bg-gray-700 border border-gray-600 rounded-lg py-2.5 px-4 text-white placeholder-gray-400 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 mb-4"
+          class="w-full bg-gray-700 border border-gray-600 rounded-lg py-2.5 px-4 text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 mb-4"
         ></textarea>
         <div class="flex gap-3">
           <button

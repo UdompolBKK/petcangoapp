@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-20">
+    <section class="bg-primary-500 text-white py-20">
       <div class="container-custom">
         <div class="max-w-3xl mx-auto text-center">
           <h1 class="text-4xl md:text-5xl font-bold mb-6">เกี่ยวกับ PetCanGo</h1>
@@ -141,7 +141,7 @@
           </div>
 
           <!-- CTA -->
-          <div class="bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg p-8 text-center text-white">
+          <div class="bg-primary-500 rounded-lg p-8 text-center text-white">
             <h2 class="text-3xl font-bold mb-4">พร้อมเริ่มต้นการเดินทางแล้วหรือยัง?</h2>
             <p class="text-xl mb-6 text-white/90">ค้นหาที่พักที่เหมาะสมสำหรับคุณและสัตว์เลี้ยงของคุณวันนี้</p>
             <NuxtLink to="/" class="inline-block bg-white text-primary-500 px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors">

@@ -136,7 +136,7 @@
     </section>
 
     <!-- List Your Property Section -->
-    <section class="py-20 bg-gradient-to-br from-primary-500 via-primary-400 to-secondary-500 text-white relative overflow-hidden">
+    <section class="py-20 bg-primary-500 text-white relative overflow-hidden">
       <!-- Background decoration -->
       <div class="absolute inset-0 opacity-10">
         <div class="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
@@ -205,7 +205,7 @@
               <NuxtLink
                 v-if="isAuthenticated"
                 to="/my-hotels/create"
-                class="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-secondary-400 hover:text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                class="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-primary-600 hover:text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -215,7 +215,7 @@
               <NuxtLink
                 v-else
                 to="/login?redirect=/my-hotels/create"
-                class="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-secondary-400 hover:text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                class="inline-flex items-center justify-center gap-2 bg-white text-primary-600 hover:bg-primary-600 hover:text-white font-bold py-4 px-8 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
@@ -241,19 +241,19 @@
               <!-- Stats Cards -->
               <div class="grid grid-cols-2 gap-4">
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                  <div class="text-4xl font-bold text-secondary-300 mb-2">500+</div>
+                  <div class="text-4xl font-bold text-yellow-300 mb-2">500+</div>
                   <div class="text-sm text-white/80">ที่พักทั่วประเทศ</div>
                 </div>
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                  <div class="text-4xl font-bold text-secondary-300 mb-2">77</div>
+                  <div class="text-4xl font-bold text-yellow-300 mb-2">77</div>
                   <div class="text-sm text-white/80">จังหวัดครอบคลุม</div>
                 </div>
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                  <div class="text-4xl font-bold text-secondary-300 mb-2">10K+</div>
+                  <div class="text-4xl font-bold text-yellow-300 mb-2">10K+</div>
                   <div class="text-sm text-white/80">ผู้ใช้งานต่อเดือน</div>
                 </div>
                 <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-6 text-center transform hover:scale-105 transition-transform">
-                  <div class="text-4xl font-bold text-secondary-300 mb-2">4.8</div>
+                  <div class="text-4xl font-bold text-yellow-300 mb-2">4.8</div>
                   <div class="text-sm text-white/80">คะแนนเฉลี่ย</div>
                 </div>
               </div>
@@ -263,19 +263,19 @@
                 <h4 class="text-lg font-bold mb-4">ขั้นตอนง่ายๆ</h4>
                 <div class="space-y-3">
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-secondary-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <div class="w-8 h-8 bg-yellow-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">1</div>
                     <span class="text-sm">สมัครสมาชิก / เข้าสู่ระบบ</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-secondary-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <div class="w-8 h-8 bg-yellow-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">2</div>
                     <span class="text-sm">กรอกข้อมูลที่พักของคุณ</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-secondary-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <div class="w-8 h-8 bg-yellow-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">3</div>
                     <span class="text-sm">รอการอนุมัติจากทีมงาน</span>
                   </div>
                   <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-secondary-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">4</div>
+                    <div class="w-8 h-8 bg-yellow-400 text-primary-700 rounded-full flex items-center justify-center font-bold text-sm">4</div>
                     <span class="text-sm">เริ่มรับจองได้ทันที!</span>
                   </div>
                 </div>

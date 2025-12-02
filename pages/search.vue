@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Search Header -->
-    <section class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white py-12">
+    <section class="bg-primary-500 text-white py-12">
       <div class="container-custom">
         <h1 class="text-3xl md:text-4xl font-bold mb-6">ผลการค้นหา</h1>
 
@@ -42,7 +42,7 @@
             <div class="flex items-end">
               <button
                 type="submit"
-                class="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-colors"
+                class="w-full bg-primary-500 hover:bg-primary-600 text-white font-medium py-3 px-6 rounded-lg transition-all shadow-md hover:shadow-lg"
               >
                 ค้นหา
               </button>
