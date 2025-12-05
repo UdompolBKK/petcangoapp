@@ -15,7 +15,8 @@
         <!-- Actual Image - Always render but use lazy loading -->
         <img
           :src="province.image || '/images/placeholder-province.jpg'"
-          :alt="province.name"
+          :alt="`ที่พักสัตว์เลี้ยงใน${province.name} - ${province.hotelCount || 0} แห่ง`"
+          :title="`ค้นหาที่พักรับสัตว์เลี้ยงใน${province.name} ${getRegionName(province.region || '')}`"
           loading="lazy"
           class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
           :class="imageLoaded ? 'opacity-100' : 'opacity-0'"

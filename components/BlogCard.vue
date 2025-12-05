@@ -5,7 +5,9 @@
       <img
         v-if="imageUrl"
         :src="imageUrl"
-        :alt="post.title"
+        :alt="`${post.title} - บทความ PetCanGo`"
+        :title="post.title"
+        loading="lazy"
         class="w-full h-auto object-contain transition-transform duration-300 hover:scale-105"
         @error="handleImageError"
       />

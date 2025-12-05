@@ -4,7 +4,9 @@
     <section class="relative h-[500px] overflow-hidden bg-gray-900">
       <img
         :src="hotel.mainImage || hotel.image || '/images/placeholder-hotel.jpg'"
-        :alt="hotel.name"
+        :alt="`${hotel.name} - ที่พักสัตว์เลี้ยงใน${getProvinceName(hotel.province)}`"
+        :title="`${hotel.name} - โรงแรมรับสัตว์เลี้ยง`"
+        loading="lazy"
         class="w-full h-full object-cover opacity-90"
         @error="handleImageError"
       />
@@ -82,7 +84,9 @@
                   >
                     <img
                       :src="item.image || item"
-                      :alt="item.alttext || `Gallery image ${index + 1}`"
+                      :alt="item.alttext || `${hotel.name} - รูปภาพที่ ${index + 1}`"
+                      :title="`${hotel.name} - แกลเลอรี่รูปที่ ${index + 1}`"
+                      loading="lazy"
                       class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                       @error="handleImageError"
                     />

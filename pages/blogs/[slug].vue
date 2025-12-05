@@ -5,7 +5,9 @@
     <section class="relative h-[500px] overflow-hidden bg-gray-900">
       <img
         :src="post.featuredImage || '/images/placeholder-blog.jpg'"
-        :alt="post.title"
+        :alt="`${post.title} - บทความ PetCanGo`"
+        :title="post.title"
+        loading="lazy"
         class="w-full h-full object-cover opacity-80"
         @error="handleImageError"
       />
@@ -67,7 +69,9 @@
               <div v-if="mainImage" class="mb-8">
                 <img
                   :src="mainImage"
-                  :alt="post.title"
+                  :alt="`${post.title} - รูปภาพประกอบบทความ`"
+                  :title="post.title"
+                  loading="lazy"
                   class="w-full h-auto rounded-lg shadow-md"
                   @error="handleImageError"
                 />
@@ -121,7 +125,9 @@
                   >
                     <img
                       :src="related.featuredImage"
-                      :alt="related.title"
+                      :alt="`${related.title} - บทความที่เกี่ยวข้อง`"
+                      :title="related.title"
+                      loading="lazy"
                       class="w-full h-32 object-cover rounded-lg mb-2 group-hover:opacity-90 transition-opacity"
                       @error="handleImageError"
                     />

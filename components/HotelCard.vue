@@ -15,7 +15,8 @@
         <!-- Actual Image - Always render but use lazy loading -->
         <img
           :src="hotel.mainImage || hotel.image || '/images/placeholder-hotel.jpg'"
-          :alt="hotel.name"
+          :alt="`${hotel.name} - ที่พักสัตว์เลี้ยง${getProvinceName(hotel.province) ? 'ใน' + getProvinceName(hotel.province) : ''}`"
+          :title="`${hotel.name} - ที่พักรับสัตว์เลี้ยง${hotel.priceStart ? ' เริ่มต้น ' + formatPrice(hotel.priceStart) + ' บาท' : ''}`"
           loading="lazy"
           class="w-full h-full object-cover transition-all duration-500 group-hover:scale-110"
           :class="imageLoaded ? 'opacity-100' : 'opacity-0'"

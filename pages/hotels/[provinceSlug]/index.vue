@@ -4,7 +4,9 @@
     <section class="relative h-[400px] overflow-hidden">
       <img
         :src="province.image || '/images/placeholder-province.jpg'"
-        :alt="province.name"
+        :alt="`ที่พักสัตว์เลี้ยงใน${province.name} - รวม ${province.hotelCount || 0} แห่ง`"
+        :title="`ค้นหาที่พักรับสัตว์เลี้ยงใน${province.name}`"
+        loading="lazy"
         class="w-full h-full object-cover"
         @error="handleImageError"
       />
@@ -59,7 +61,9 @@
                   <img
                     v-if="attraction.image"
                     :src="attraction.image"
-                    :alt="attraction.name"
+                    :alt="`${attraction.name} - สถานที่ท่องเที่ยวใน${province.name}`"
+                    :title="attraction.name"
+                    loading="lazy"
                     class="w-full h-32 object-cover rounded-lg mb-3"
                     @error="handleAttractionImageError"
                   />
