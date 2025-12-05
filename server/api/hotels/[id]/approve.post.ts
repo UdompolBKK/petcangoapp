@@ -60,12 +60,23 @@ export default defineEventHandler(async (event) => {
     }
 
     // Send email notification
+    console.log('Hotel data for email:', {
+      name: existingHotel.name,
+      ownerEmail: existingHotel.ownerEmail,
+      ownerId: existingHotel.ownerId,
+      slug: existingHotel.slug
+    })
+
     if (existingHotel.ownerEmail) {
-      await sendHotelApprovalEmail({
+      console.log('Sending approval email to:', existingHotel.ownerEmail)
+      const emailResult = await sendHotelApprovalEmail({
         hotelName: existingHotel.name,
         ownerEmail: existingHotel.ownerEmail,
         hotelUrl: existingHotel.slug ? `https://petcango.com/hotels/${existingHotel.province || 'unknown'}/${existingHotel.slug}` : undefined
       })
+      console.log('Email result:', emailResult)
+    } else {
+      console.log('No ownerEmail found, skipping email notification')
     }
 
     return {

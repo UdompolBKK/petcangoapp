@@ -1,5 +1,6 @@
 <template>
-  <div v-if="post">
+  <div class="blog-page">
+    <template v-if="post">
     <!-- Hero Image -->
     <section class="relative h-[500px] overflow-hidden bg-gray-900">
       <img
@@ -62,6 +63,16 @@
           <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
             <!-- Article Content -->
             <article class="lg:col-span-3">
+              <!-- Main Image -->
+              <div v-if="mainImage" class="mb-8">
+                <img
+                  :src="mainImage"
+                  :alt="post.title"
+                  class="w-full h-auto rounded-lg shadow-md"
+                  @error="handleImageError"
+                />
+              </div>
+
               <!-- Excerpt -->
               <div v-if="post.excerpt" class="text-xl text-gray-700 font-medium mb-8 pb-8 border-b">
                 {{ post.excerpt }}
@@ -74,23 +85,23 @@
               <div class="mt-12 pt-8 border-t">
                 <h3 class="text-lg font-bold text-gray-900 mb-4">แชร์บทความนี้</h3>
                 <div class="flex flex-wrap gap-3">
-                  <button class="flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
+                  <button @click="shareOnFacebook" class="flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                     </svg>
                     Facebook
                   </button>
-                  <button class="flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
+                  <button @click="shareOnLine" class="flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                      <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.281.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
                     </svg>
                     Line
                   </button>
-                  <button class="flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
+                  <button @click="copyLink" class="flex items-center px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/>
                     </svg>
-                    คัดลอกลิงก์
+                    {{ copyText }}
                   </button>
                 </div>
               </div>
@@ -146,13 +157,14 @@
         </div>
       </div>
     </section>
-  </div>
+    </template>
 
-  <!-- Loading State -->
-  <div v-else class="min-h-screen flex items-center justify-center">
-    <div class="text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
-      <p class="text-gray-600">กำลังโหลด...</p>
+    <!-- Loading State -->
+    <div v-else class="min-h-screen flex items-center justify-center">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
+        <p class="text-gray-600">กำลังโหลด...</p>
+      </div>
     </div>
   </div>
 </template>
@@ -163,6 +175,7 @@ const slug = route.params.slug as string
 
 const { getBlogBySlug, getLatestBlogs } = useBlogs()
 const { setArticleSEO } = useSEO()
+const { trackPageView } = usePageView()
 
 // Data
 const post = ref<any>(null)
@@ -236,6 +249,38 @@ const mockPost = {
   tags: ['อาหาร', 'สุนัข', 'สุขภาพ']
 }
 
+// Main image computed - use featuredImage or image field
+const mainImage = computed(() => {
+  if (!post.value) return ''
+  return post.value.featuredImage || post.value.image || post.value.coverImage || ''
+})
+
+// Share functions
+const copyText = ref('คัดลอกลิงก์')
+
+const shareOnFacebook = () => {
+  const url = encodeURIComponent(window.location.href)
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank', 'width=600,height=400')
+}
+
+const shareOnLine = () => {
+  const url = encodeURIComponent(window.location.href)
+  const text = encodeURIComponent(post.value?.title || '')
+  window.open(`https://social-plugins.line.me/lineit/share?url=${url}&text=${text}`, '_blank', 'width=600,height=400')
+}
+
+const copyLink = async () => {
+  try {
+    await navigator.clipboard.writeText(window.location.href)
+    copyText.value = 'คัดลอกแล้ว!'
+    setTimeout(() => {
+      copyText.value = 'คัดลอกลิงก์'
+    }, 2000)
+  } catch (err) {
+    console.error('Failed to copy:', err)
+  }
+}
+
 const formatDate = (date: string): string => {
   const d = new Date(date)
   return d.toLocaleDateString('th-TH', {
@@ -275,6 +320,9 @@ onMounted(async () => {
         tags: blogData.tags,
         slug: slug
       })
+
+      // Track pageview
+      trackPageView('blog', blogData.id)
     } else {
       // Use mock data if not found
       post.value = mockPost

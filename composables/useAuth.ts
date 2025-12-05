@@ -6,27 +6,58 @@ import {
   signOut,
   onAuthStateChanged,
   type User,
-  type UserCredential
+  type UserCredential,
+  type Auth
 } from 'firebase/auth'
 
+// Store auth reference outside composable
+let authInstance: Auth | null = null
+
+const getAuthInstance = (): Auth | null => {
+  if (!authInstance && import.meta.client) {
+    try {
+      const { auth } = useFirebase()
+      authInstance = auth
+    } catch (err) {
+      console.error('Failed to initialize Firebase Auth:', err)
+    }
+  }
+  return authInstance
+}
+
 export const useAuth = () => {
-  const { auth } = useFirebase()
-  const user = useState<User | null>('user', () => null)
+  const user = useState<User | null>('auth-user', () => null)
   const loading = useState<boolean>('auth-loading', () => true)
   const error = useState<string | null>('auth-error', () => null)
+  const authInitialized = useState<boolean>('auth-initialized', () => false)
 
-  // Initialize auth state listener
-  onMounted(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-      user.value = currentUser
+  // Initialize auth state listener only once on client-side
+  if (!authInitialized.value && import.meta.client) {
+    const auth = getAuthInstance()
+    if (auth) {
+      authInitialized.value = true
+      onAuthStateChanged(auth, (currentUser) => {
+        user.value = currentUser
+        loading.value = false
+      }, (err) => {
+        console.error('Auth state change error:', err)
+        loading.value = false
+      })
+    } else {
       loading.value = false
-    })
-  })
+    }
+  }
 
   /**
    * Sign in with Email and Password
    */
   const signInWithEmail = async (email: string, password: string): Promise<UserCredential | null> => {
+    const auth = getAuthInstance()
+    if (!auth) {
+      error.value = 'ไม่สามารถเชื่อมต่อระบบได้'
+      return null
+    }
+
     try {
       error.value = null
       loading.value = true
@@ -46,6 +77,12 @@ export const useAuth = () => {
    * Sign up with Email and Password
    */
   const signUpWithEmail = async (email: string, password: string): Promise<UserCredential | null> => {
+    const auth = getAuthInstance()
+    if (!auth) {
+      error.value = 'ไม่สามารถเชื่อมต่อระบบได้'
+      return null
+    }
+
     try {
       error.value = null
       loading.value = true
@@ -65,6 +102,12 @@ export const useAuth = () => {
    * Sign in with Google
    */
   const signInWithGoogle = async (): Promise<UserCredential | null> => {
+    const auth = getAuthInstance()
+    if (!auth) {
+      error.value = 'ไม่สามารถเชื่อมต่อระบบได้'
+      return null
+    }
+
     try {
       error.value = null
       loading.value = true
@@ -89,6 +132,9 @@ export const useAuth = () => {
    * Sign out
    */
   const logout = async (): Promise<boolean> => {
+    const auth = getAuthInstance()
+    if (!auth) return false
+
     try {
       error.value = null
       await signOut(auth)

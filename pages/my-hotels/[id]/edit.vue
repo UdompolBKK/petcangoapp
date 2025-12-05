@@ -13,15 +13,25 @@
             </svg>
           </NuxtLink>
           <div>
-            <h1 class="text-2xl md:text-3xl font-bold">ลงประกาศที่พักใหม่</h1>
-            <p class="text-white/80">กรอกข้อมูลที่พักของคุณเพื่อลงประกาศฟรี</p>
+            <h1 class="text-2xl md:text-3xl font-bold">แก้ไขที่พัก</h1>
+            <p class="text-white/80">แก้ไขข้อมูลที่พักของคุณ</p>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- Loading State -->
+    <div v-if="loading" class="py-12">
+      <div class="container-custom max-w-4xl">
+        <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500 mx-auto mb-4"></div>
+          <p class="text-gray-600">กำลังโหลดข้อมูล...</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Form -->
-    <section class="py-8">
+    <section v-else class="py-8">
       <div class="container-custom max-w-4xl">
         <form @submit.prevent="submitForm" class="space-y-8">
           <!-- Basic Information -->
@@ -47,26 +57,21 @@
                   required
                   placeholder="เช่น Pet Hotel สุขุมวิท"
                   class="input"
-                  @input="generateSlugFromName"
                 />
               </div>
 
-              <!-- Slug -->
+              <!-- Slug (Read-only) -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   Slug (URL)
-                  <span v-if="isCheckingSlug" class="text-gray-400 text-xs ml-2">กำลังตรวจสอบ...</span>
-                  <span v-else-if="slugStatus === 'available'" class="text-green-500 text-xs ml-2">ใช้งานได้</span>
-                  <span v-else-if="slugStatus === 'taken'" class="text-red-500 text-xs ml-2">มีการใช้งานแล้ว (จะเติมตัวเลขอัตโนมัติ)</span>
                 </label>
                 <input
                   v-model="form.slug"
                   type="text"
                   readonly
                   class="input bg-gray-100 cursor-not-allowed text-gray-600"
-                  placeholder="slug-จะถูกสร้างอัตโนมัติ"
                 />
-                <p class="mt-1 text-sm text-gray-500">Slug จะถูกสร้างอัตโนมัติจากชื่อที่พัก และไม่สามารถแก้ไขได้หลังจากสร้างแล้ว</p>
+                <p class="mt-1 text-sm text-gray-500">Slug ไม่สามารถแก้ไขได้หลังจากสร้างที่พักแล้ว</p>
               </div>
 
               <!-- Description -->
@@ -78,7 +83,7 @@
                   v-model="form.description"
                   required
                   rows="4"
-                  placeholder="อธิบายรายละเอียดที่พักของคุณ บริการที่มี สิ่งอำนวยความสะดวก ฯลฯ"
+                  placeholder="อธิบายรายละเอียดที่พักของคุณ"
                   class="input"
                 ></textarea>
               </div>
@@ -146,7 +151,6 @@
 
             <div class="grid gap-6">
               <div class="grid md:grid-cols-2 gap-6">
-                <!-- Province -->
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">
                     จังหวัด <span class="text-primary-500">*</span>
@@ -159,7 +163,6 @@
                   </select>
                 </div>
 
-                <!-- District -->
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">
                     เขต/อำเภอ <span class="text-primary-500">*</span>
@@ -174,7 +177,6 @@
                 </div>
               </div>
 
-              <!-- Address -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   ที่อยู่ <span class="text-primary-500">*</span>
@@ -188,7 +190,6 @@
                 ></textarea>
               </div>
 
-              <!-- Google Maps Link -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   ลิงก์ Google Maps
@@ -199,7 +200,6 @@
                   placeholder="https://maps.google.com/..."
                   class="input"
                 />
-                <p class="mt-1 text-sm text-gray-500">วางลิงก์จาก Google Maps เพื่อให้ลูกค้าหาที่พักได้ง่าย</p>
               </div>
             </div>
           </div>
@@ -216,7 +216,6 @@
             </h2>
 
             <div class="grid md:grid-cols-2 gap-6">
-              <!-- Phone -->
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">
                   เบอร์โทรศัพท์ <span class="text-primary-500">*</span>
@@ -230,69 +229,29 @@
                 />
               </div>
 
-              <!-- Email -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  อีเมล
-                </label>
-                <input
-                  v-model="form.email"
-                  type="email"
-                  placeholder="example@email.com"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">อีเมล</label>
+                <input v-model="form.email" type="email" placeholder="example@email.com" class="input" />
               </div>
 
-              <!-- Line ID -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Line ID
-                </label>
-                <input
-                  v-model="form.lineId"
-                  type="text"
-                  placeholder="@yourlineid"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">Line ID</label>
+                <input v-model="form.lineId" type="text" placeholder="@yourlineid" class="input" />
               </div>
 
-              <!-- Website -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  เว็บไซต์
-                </label>
-                <input
-                  v-model="form.website"
-                  type="url"
-                  placeholder="https://www.example.com"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">เว็บไซต์</label>
+                <input v-model="form.website" type="url" placeholder="https://www.example.com" class="input" />
               </div>
 
-              <!-- Facebook -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Facebook
-                </label>
-                <input
-                  v-model="form.facebook"
-                  type="url"
-                  placeholder="https://www.facebook.com/yourpage"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">Facebook</label>
+                <input v-model="form.facebook" type="url" placeholder="https://www.facebook.com/yourpage" class="input" />
               </div>
 
-              <!-- Instagram -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  Instagram
-                </label>
-                <input
-                  v-model="form.instagram"
-                  type="text"
-                  placeholder="@yourinsta"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">Instagram</label>
+                <input v-model="form.instagram" type="text" placeholder="@yourinsta" class="input" />
               </div>
             </div>
           </div>
@@ -310,41 +269,21 @@
 
             <div class="grid gap-6">
               <div class="grid md:grid-cols-2 gap-6">
-                <!-- Price Start -->
                 <div>
                   <label class="block text-sm font-medium text-gray-700 mb-2">
                     ราคาเริ่มต้น (บาท/คืน) <span class="text-primary-500">*</span>
                   </label>
-                  <input
-                    v-model.number="form.priceStart"
-                    type="number"
-                    required
-                    min="0"
-                    placeholder="500"
-                    class="input"
-                  />
+                  <input v-model.number="form.priceStart" type="number" required min="0" placeholder="500" class="input" />
                 </div>
 
-                <!-- Price End -->
                 <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">
-                    ราคาสูงสุด (บาท/คืน)
-                  </label>
-                  <input
-                    v-model.number="form.priceEnd"
-                    type="number"
-                    min="0"
-                    placeholder="2000"
-                    class="input"
-                  />
+                  <label class="block text-sm font-medium text-gray-700 mb-2">ราคาสูงสุด (บาท/คืน)</label>
+                  <input v-model.number="form.priceEnd" type="number" min="0" placeholder="2000" class="input" />
                 </div>
               </div>
 
-              <!-- Services/Facilities -->
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  บริการและสิ่งอำนวยความสะดวก
-                </label>
+                <label class="block text-sm font-medium text-gray-700 mb-2">บริการและสิ่งอำนวยความสะดวก</label>
                 <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <label v-for="facility in facilityOptions" :key="facility.value" class="flex items-center gap-2 cursor-pointer">
                     <input type="checkbox" v-model="form.facilities" :value="facility.value" class="w-4 h-4 text-primary-500 rounded">
@@ -366,8 +305,35 @@
               รูปภาพ
             </h2>
 
-            <!-- Image Upload -->
+            <!-- Existing Images -->
+            <div v-if="form.existingImages.length > 0" class="mb-6">
+              <p class="text-sm text-gray-600 mb-3">รูปภาพปัจจุบัน</p>
+              <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div
+                  v-for="(image, index) in form.existingImages"
+                  :key="'existing-' + index"
+                  class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group"
+                >
+                  <img :src="image" class="w-full h-full object-cover" />
+                  <button
+                    @click="removeExistingImage(index)"
+                    type="button"
+                    class="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                  <div v-if="index === 0" class="absolute bottom-2 left-2 px-2 py-1 bg-primary-500 text-white text-xs rounded-full">
+                    รูปหลัก
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload New Images -->
             <div class="space-y-4">
+              <p class="text-sm text-gray-600">เพิ่มรูปภาพใหม่</p>
               <div
                 @click="$refs.fileInput.click()"
                 @dragover.prevent
@@ -389,28 +355,25 @@
                 <p class="text-sm text-gray-400">รองรับไฟล์ PNG, JPG, WEBP ขนาดไม่เกิน 5MB</p>
               </div>
 
-              <!-- Image Preview -->
-              <div v-if="form.imageFiles.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <!-- New Image Preview -->
+              <div v-if="form.newImageFiles.length > 0" class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div
-                  v-for="(image, index) in form.imageFiles"
-                  :key="index"
+                  v-for="(image, index) in form.newImageFiles"
+                  :key="'new-' + index"
                   class="relative aspect-square rounded-lg overflow-hidden bg-gray-100 group"
                 >
                   <img :src="image.preview" class="w-full h-full object-cover" />
                   <button
-                    @click="removeImage(index)"
+                    @click="removeNewImage(index)"
                     type="button"
-                    class="absolute top-2 right-2 w-8 h-8 bg-primary-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                    class="absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                   </button>
-                  <div
-                    v-if="index === 0"
-                    class="absolute bottom-2 left-2 px-2 py-1 bg-primary-500 text-white text-xs rounded-full"
-                  >
-                    รูปหลัก
+                  <div class="absolute bottom-2 left-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
+                    ใหม่
                   </div>
                 </div>
               </div>
@@ -430,24 +393,12 @@
 
             <div class="grid md:grid-cols-2 gap-6">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  เปิด
-                </label>
-                <input
-                  v-model="form.openTime"
-                  type="time"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">เปิด</label>
+                <input v-model="form.openTime" type="time" class="input" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                  ปิด
-                </label>
-                <input
-                  v-model="form.closeTime"
-                  type="time"
-                  class="input"
-                />
+                <label class="block text-sm font-medium text-gray-700 mb-2">ปิด</label>
+                <input v-model="form.closeTime" type="time" class="input" />
               </div>
             </div>
 
@@ -456,26 +407,6 @@
                 <input type="checkbox" v-model="form.is24Hours" class="w-4 h-4 text-primary-500 rounded">
                 <span class="text-sm">เปิดให้บริการ 24 ชั่วโมง</span>
               </label>
-            </div>
-          </div>
-
-          <!-- Terms -->
-          <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6">
-            <div class="flex gap-4">
-              <div class="flex-shrink-0">
-                <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-bold text-yellow-800 mb-2">ข้อตกลงและเงื่อนไข</h3>
-                <ul class="text-sm text-yellow-700 space-y-1 list-disc list-inside">
-                  <li>ข้อมูลที่พักจะถูกตรวจสอบโดยทีมงานก่อนเผยแพร่</li>
-                  <li>กรุณากรอกข้อมูลที่ถูกต้องและเป็นปัจจุบัน</li>
-                  <li>รูปภาพต้องเป็นรูปจริงของสถานที่</li>
-                  <li>การลงประกาศเท็จจะถูกลบออกจากระบบ</li>
-                </ul>
-              </div>
             </div>
           </div>
 
@@ -491,25 +422,21 @@
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
               </svg>
               <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
               </svg>
-              {{ submitting ? 'กำลังส่ง...' : 'ส่งเพื่อตรวจสอบ' }}
+              {{ submitting ? 'กำลังบันทึก...' : 'บันทึกการแก้ไข' }}
             </button>
-            <button
-              type="button"
-              @click="saveDraft"
-              :disabled="submitting"
-              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-4 px-8 rounded-xl transition-colors disabled:opacity-50"
+            <NuxtLink
+              to="/my-hotels"
+              class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-4 px-8 rounded-xl transition-colors"
             >
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/>
-              </svg>
-              บันทึกฉบับร่าง
-            </button>
+              ยกเลิก
+            </NuxtLink>
           </div>
         </form>
       </div>
     </section>
+
     <!-- Success Modal -->
     <Teleport to="body">
       <Transition
@@ -521,49 +448,22 @@
         leave-to-class="opacity-0"
       >
         <div v-if="showSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <!-- Backdrop -->
-          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeSuccessModal"></div>
-
-          <!-- Modal Content -->
-          <Transition
-            enter-active-class="transition ease-out duration-300"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-200"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-          >
-            <div v-if="showSuccessModal" class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
-              <!-- Success Icon -->
-              <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-              </div>
-
-              <!-- Title -->
-              <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ successModalTitle }}</h3>
-
-              <!-- Message -->
-              <p class="text-gray-600 mb-8">{{ successModalMessage }}</p>
-
-              <!-- Buttons -->
-              <div class="flex flex-col gap-3">
-                <button
-                  @click="goToMyHotels"
-                  class="w-full py-3 px-6 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors"
-                >
-                  ไปที่จัดการที่พัก
-                </button>
-                <button
-                  @click="createAnother"
-                  class="w-full py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors"
-                >
-                  ลงประกาศเพิ่ม
-                </button>
-              </div>
+          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="goToMyHotels"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
             </div>
-          </Transition>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">บันทึกสำเร็จ!</h3>
+            <p class="text-gray-600 mb-8">ข้อมูลที่พักของคุณถูกอัปเดตเรียบร้อยแล้ว</p>
+            <button
+              @click="goToMyHotels"
+              class="w-full py-3 px-6 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl transition-colors"
+            >
+              กลับไปที่จัดการที่พัก
+            </button>
+          </div>
         </div>
       </Transition>
     </Teleport>
@@ -579,41 +479,22 @@
         leave-to-class="opacity-0"
       >
         <div v-if="showErrorModal" class="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <!-- Backdrop -->
-          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="closeErrorModal"></div>
-
-          <!-- Modal Content -->
-          <Transition
-            enter-active-class="transition ease-out duration-300"
-            enter-from-class="opacity-0 scale-95"
-            enter-to-class="opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-200"
-            leave-from-class="opacity-100 scale-100"
-            leave-to-class="opacity-0 scale-95"
-          >
-            <div v-if="showErrorModal" class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
-              <!-- Error Icon -->
-              <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                </svg>
-              </div>
-
-              <!-- Title -->
-              <h3 class="text-2xl font-bold text-gray-900 mb-2">เกิดข้อผิดพลาด</h3>
-
-              <!-- Message -->
-              <p class="text-gray-600 mb-8">{{ errorModalMessage }}</p>
-
-              <!-- Button -->
-              <button
-                @click="closeErrorModal"
-                class="w-full py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors"
-              >
-                ปิด
-              </button>
+          <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="showErrorModal = false"></div>
+          <div class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
+            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
             </div>
-          </Transition>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">เกิดข้อผิดพลาด</h3>
+            <p class="text-gray-600 mb-8">{{ errorMessage }}</p>
+            <button
+              @click="showErrorModal = false"
+              class="w-full py-3 px-6 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors"
+            >
+              ปิด
+            </button>
+          </div>
         </div>
       </Transition>
     </Teleport>
@@ -625,75 +506,21 @@ definePageMeta({
   middleware: ['auth']
 })
 
+const route = useRoute()
+const router = useRouter()
+const { user } = useAuth()
+
+const hotelId = route.params.id as string
+
 useHead({
-  title: 'ลงประกาศที่พักใหม่ - PetCanGo'
+  title: 'แก้ไขที่พัก - PetCanGo'
 })
 
-const { user } = useAuth()
-const router = useRouter()
-
+const loading = ref(true)
 const submitting = ref(false)
-
-// Modal states
 const showSuccessModal = ref(false)
 const showErrorModal = ref(false)
-const successModalTitle = ref('')
-const successModalMessage = ref('')
-const errorModalMessage = ref('')
-
-const openSuccessModal = (title: string, message: string) => {
-  successModalTitle.value = title
-  successModalMessage.value = message
-  showSuccessModal.value = true
-}
-
-const closeSuccessModal = () => {
-  showSuccessModal.value = false
-}
-
-const openErrorModal = (message: string) => {
-  errorModalMessage.value = message
-  showErrorModal.value = true
-}
-
-const closeErrorModal = () => {
-  showErrorModal.value = false
-}
-
-const goToMyHotels = () => {
-  showSuccessModal.value = false
-  router.push('/my-hotels')
-}
-
-const createAnother = () => {
-  showSuccessModal.value = false
-  // Reset form
-  form.name = ''
-  form.slug = ''
-  form.description = ''
-  form.type = ''
-  form.petTypes = []
-  form.province = ''
-  form.district = ''
-  form.address = ''
-  form.googleMapsUrl = ''
-  form.phone = ''
-  form.email = ''
-  form.lineId = ''
-  form.website = ''
-  form.facebook = ''
-  form.instagram = ''
-  form.priceStart = null
-  form.priceEnd = null
-  form.facilities = []
-  form.openTime = '09:00'
-  form.closeTime = '18:00'
-  form.is24Hours = false
-  form.imageFiles = []
-  // Reset slug status
-  slugStatus.value = null
-  finalSlug.value = ''
-}
+const errorMessage = ref('')
 
 const form = reactive({
   name: '',
@@ -717,85 +544,9 @@ const form = reactive({
   openTime: '09:00',
   closeTime: '18:00',
   is24Hours: false,
-  imageFiles: [] as { file: File; preview: string }[]
+  existingImages: [] as string[],
+  newImageFiles: [] as { file: File; preview: string }[]
 })
-
-// Slug generation
-const isCheckingSlug = ref(false)
-const slugStatus = ref<'available' | 'taken' | null>(null)
-const finalSlug = ref('')
-let slugCheckTimeout: NodeJS.Timeout | null = null
-
-const createSlug = (name: string): string => {
-  return name
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9ก-๙\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
-}
-
-const checkSlugAvailability = async (slug: string): Promise<{ exists: boolean; availableSlug: string }> => {
-  let currentSlug = slug
-  let counter = 0
-
-  while (true) {
-    const checkSlug = counter === 0 ? currentSlug : `${currentSlug}-${counter}`
-
-    try {
-      const response = await $fetch('/api/hotels/check-slug', {
-        query: { slug: checkSlug }
-      }) as { exists: boolean }
-
-      if (!response.exists) {
-        return { exists: counter > 0, availableSlug: checkSlug }
-      }
-
-      counter++
-      if (counter > 100) {
-        // Fallback: use timestamp
-        return { exists: true, availableSlug: `${currentSlug}-${Date.now()}` }
-      }
-    } catch (error) {
-      console.error('Error checking slug:', error)
-      return { exists: false, availableSlug: checkSlug }
-    }
-  }
-}
-
-const generateSlugFromName = () => {
-  const baseSlug = createSlug(form.name)
-  form.slug = baseSlug
-
-  if (!baseSlug) {
-    slugStatus.value = null
-    finalSlug.value = ''
-    return
-  }
-
-  // Debounce the slug check
-  if (slugCheckTimeout) {
-    clearTimeout(slugCheckTimeout)
-  }
-
-  slugCheckTimeout = setTimeout(async () => {
-    isCheckingSlug.value = true
-    slugStatus.value = null
-
-    const result = await checkSlugAvailability(baseSlug)
-
-    if (result.exists) {
-      slugStatus.value = 'taken'
-      form.slug = result.availableSlug
-    } else {
-      slugStatus.value = 'available'
-    }
-
-    finalSlug.value = result.availableSlug
-    isCheckingSlug.value = false
-  }, 500)
-}
 
 const provinces = [
   'กรุงเทพมหานคร', 'กระบี่', 'กาญจนบุรี', 'กาฬสินธุ์', 'กำแพงเพชร',
@@ -831,6 +582,51 @@ const facilityOptions = [
   { value: 'webcam', label: 'ดูผ่านกล้องออนไลน์' }
 ]
 
+const loadHotel = async () => {
+  if (!user.value) return
+
+  try {
+    loading.value = true
+    const response = await $fetch(`/api/my-hotels/${hotelId}`, {
+      headers: {
+        'Authorization': `Bearer ${await user.value.getIdToken()}`
+      }
+    }) as any
+
+    const hotel = response.data
+
+    // Populate form
+    form.name = hotel.name || ''
+    form.slug = hotel.slug || ''
+    form.description = hotel.description || ''
+    form.type = hotel.type || ''
+    form.petTypes = hotel.petTypes || []
+    form.province = hotel.province || ''
+    form.district = hotel.district || ''
+    form.address = hotel.address || ''
+    form.googleMapsUrl = hotel.googleMapsUrl || ''
+    form.phone = hotel.phone || ''
+    form.email = hotel.email || ''
+    form.lineId = hotel.lineId || ''
+    form.website = hotel.website || ''
+    form.facebook = hotel.facebook || ''
+    form.instagram = hotel.instagram || ''
+    form.priceStart = hotel.priceStart || null
+    form.priceEnd = hotel.priceEnd || null
+    form.facilities = hotel.facilities || []
+    form.openTime = hotel.openTime || '09:00'
+    form.closeTime = hotel.closeTime || '18:00'
+    form.is24Hours = hotel.is24Hours || false
+    form.existingImages = hotel.images || []
+  } catch (err: any) {
+    console.error('Error loading hotel:', err)
+    errorMessage.value = 'ไม่สามารถโหลดข้อมูลที่พักได้'
+    showErrorModal.value = true
+  } finally {
+    loading.value = false
+  }
+}
+
 const handleFileSelect = (event: Event) => {
   const input = event.target as HTMLInputElement
   if (input.files) {
@@ -849,13 +645,14 @@ const addFiles = (files: File[]) => {
 
   for (const file of imageFiles) {
     if (file.size > 5 * 1024 * 1024) {
-      alert(`ไฟล์ ${file.name} ใหญ่เกินไป (สูงสุด 5MB)`)
+      errorMessage.value = `ไฟล์ ${file.name} ใหญ่เกินไป (สูงสุด 5MB)`
+      showErrorModal.value = true
       continue
     }
 
     const reader = new FileReader()
     reader.onload = (e) => {
-      form.imageFiles.push({
+      form.newImageFiles.push({
         file,
         preview: e.target?.result as string
       })
@@ -864,27 +661,38 @@ const addFiles = (files: File[]) => {
   }
 }
 
-const removeImage = (index: number) => {
-  form.imageFiles.splice(index, 1)
+const removeExistingImage = (index: number) => {
+  form.existingImages.splice(index, 1)
+}
+
+const removeNewImage = (index: number) => {
+  form.newImageFiles.splice(index, 1)
+}
+
+const goToMyHotels = () => {
+  showSuccessModal.value = false
+  router.push('/my-hotels')
 }
 
 const submitForm = async () => {
   if (!user.value) {
-    openErrorModal('กรุณาเข้าสู่ระบบก่อน')
+    errorMessage.value = 'กรุณาเข้าสู่ระบบก่อน'
+    showErrorModal.value = true
     return
   }
 
   if (form.petTypes.length === 0) {
-    openErrorModal('กรุณาเลือกสัตว์เลี้ยงที่รับอย่างน้อย 1 ประเภท')
+    errorMessage.value = 'กรุณาเลือกสัตว์เลี้ยงที่รับอย่างน้อย 1 ประเภท'
+    showErrorModal.value = true
     return
   }
 
   try {
     submitting.value = true
 
-    // Upload images first
-    const imageUrls: string[] = []
-    for (const imageFile of form.imageFiles) {
+    // Upload new images
+    const newImageUrls: string[] = []
+    for (const imageFile of form.newImageFiles) {
       const formData = new FormData()
       formData.append('file', imageFile.file)
       formData.append('folder', 'hotels')
@@ -898,14 +706,16 @@ const submitForm = async () => {
       }) as any
 
       if (uploadResult.success && uploadResult.data?.[0]?.url) {
-        imageUrls.push(uploadResult.data[0].url)
+        newImageUrls.push(uploadResult.data[0].url)
       }
     }
 
-    // Create hotel data
+    // Combine existing and new images
+    const allImages = [...form.existingImages, ...newImageUrls]
+
+    // Update hotel data
     const hotelData = {
       name: form.name,
-      slug: form.slug || finalSlug.value || createSlug(form.name) + '-' + Date.now(),
       description: form.description,
       type: form.type,
       petTypes: form.petTypes,
@@ -925,99 +735,29 @@ const submitForm = async () => {
       openTime: form.is24Hours ? '00:00' : form.openTime,
       closeTime: form.is24Hours ? '23:59' : form.closeTime,
       is24Hours: form.is24Hours,
-      images: imageUrls,
-      mainImage: imageUrls[0] || '',
-      status: 'pending' // Requires admin approval
+      images: allImages,
+      mainImage: allImages[0] || ''
     }
 
-    await $fetch('/api/my-hotels', {
-      method: 'POST',
+    await $fetch(`/api/my-hotels/${hotelId}`, {
+      method: 'PUT',
       body: hotelData,
       headers: {
         'Authorization': `Bearer ${await user.value.getIdToken()}`
       }
     })
 
-    openSuccessModal('ส่งข้อมูลสำเร็จ!', 'ข้อมูลที่พักของคุณถูกส่งเรียบร้อยแล้ว รอการตรวจสอบจากทีมงาน')
+    showSuccessModal.value = true
   } catch (err: any) {
-    console.error('Error creating hotel:', err)
-    openErrorModal(err.data?.message || 'ไม่สามารถสร้างที่พักได้ กรุณาลองใหม่อีกครั้ง')
+    console.error('Error updating hotel:', err)
+    errorMessage.value = err.data?.message || 'ไม่สามารถอัปเดตที่พักได้ กรุณาลองใหม่อีกครั้ง'
+    showErrorModal.value = true
   } finally {
     submitting.value = false
   }
 }
 
-const saveDraft = async () => {
-  if (!user.value) {
-    openErrorModal('กรุณาเข้าสู่ระบบก่อน')
-    return
-  }
-
-  try {
-    submitting.value = true
-
-    // Upload images first
-    const imageUrls: string[] = []
-    for (const imageFile of form.imageFiles) {
-      const formData = new FormData()
-      formData.append('file', imageFile.file)
-      formData.append('folder', 'hotels')
-
-      const uploadResult = await $fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${await user.value.getIdToken()}`
-        }
-      }) as any
-
-      if (uploadResult.success && uploadResult.data?.[0]?.url) {
-        imageUrls.push(uploadResult.data[0].url)
-      }
-    }
-
-    // Create hotel data as draft
-    const hotelData = {
-      name: form.name || 'ฉบับร่าง',
-      slug: form.slug || finalSlug.value || createSlug(form.name || 'draft') + '-' + Date.now(),
-      description: form.description,
-      type: form.type,
-      petTypes: form.petTypes,
-      province: form.province,
-      district: form.district,
-      address: form.address,
-      googleMapsUrl: form.googleMapsUrl,
-      phone: form.phone,
-      email: form.email,
-      lineId: form.lineId,
-      website: form.website,
-      facebook: form.facebook,
-      instagram: form.instagram,
-      priceStart: form.priceStart,
-      priceEnd: form.priceEnd,
-      facilities: form.facilities,
-      openTime: form.is24Hours ? '00:00' : form.openTime,
-      closeTime: form.is24Hours ? '23:59' : form.closeTime,
-      is24Hours: form.is24Hours,
-      images: imageUrls,
-      mainImage: imageUrls[0] || '',
-      status: 'draft'
-    }
-
-    await $fetch('/api/my-hotels', {
-      method: 'POST',
-      body: hotelData,
-      headers: {
-        'Authorization': `Bearer ${await user.value.getIdToken()}`
-      }
-    })
-
-    openSuccessModal('บันทึกฉบับร่างสำเร็จ!', 'ฉบับร่างของคุณถูกบันทึกเรียบร้อยแล้ว สามารถแก้ไขได้ภายหลัง')
-  } catch (err: any) {
-    console.error('Error saving draft:', err)
-    openErrorModal(err.data?.message || 'ไม่สามารถบันทึกฉบับร่างได้ กรุณาลองใหม่อีกครั้ง')
-  } finally {
-    submitting.value = false
-  }
-}
+onMounted(() => {
+  loadHotel()
+})
 </script>

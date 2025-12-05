@@ -9,6 +9,20 @@ export default defineNuxtConfig({
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
     head: {
+      script: [
+        {
+          src: 'https://www.googletagmanager.com/gtag/js?id=G-07WH2LRYHD',
+          async: true
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-07WH2LRYHD');
+          `
+        }
+      ],
       link: [
         { rel: 'icon', type: 'image/png', href: '/common/logodog-min-1.png' }
       ]
@@ -42,6 +56,12 @@ export default defineNuxtConfig({
     firebaseAdminProjectId: '',
     firebaseAdminClientEmail: '',
     firebaseAdminPrivateKey: '',
+
+    // SMTP Configuration
+    smtpHost: '',
+    smtpPort: '',
+    smtpUser: '',
+    smtpPass: '',
 
     // Public keys (exposed to client)
     public: {

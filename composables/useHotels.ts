@@ -74,14 +74,20 @@ export const useHotels = () => {
    */
   const getFeaturedHotels = async (limitCount = 8) => {
     try {
-      const allHotels = await getCollection(
-        'hotels',
-        orderBy('createdAt', 'desc'),
-        limit(limitCount * 10)
-      )
-      // Filter by isFeatured (the field name used in backend)
+      // ดึงโรงแรมทั้งหมดเพื่อให้แน่ใจว่าได้โรงแรมที่ isFeatured = true ทุกตัว
+      const allHotels = await getCollection('hotels')
+
+      // Filter by isFeatured และ published
       const featured = allHotels
         .filter((hotel: any) => hotel.status === 'published' && hotel.isFeatured === true)
+        .sort((a: any, b: any) => {
+          // เรียงตาม viewCount ก่อน แล้วตาม createdAt
+          const viewDiff = (b.viewCount || 0) - (a.viewCount || 0)
+          if (viewDiff !== 0) return viewDiff
+          const dateA = a.createdAt?.toDate?.() || new Date(a.createdAt) || new Date(0)
+          const dateB = b.createdAt?.toDate?.() || new Date(b.createdAt) || new Date(0)
+          return dateB.getTime() - dateA.getTime()
+        })
         .slice(0, limitCount)
 
       // If no featured hotels found, return popular ones as fallback

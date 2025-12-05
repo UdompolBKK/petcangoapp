@@ -175,19 +175,34 @@
                 <span class="text-white font-medium">฿{{ formatPrice(hotel.priceStart || 0) }}</span>
               </td>
 
-              <!-- Status -->
+              <!-- Status with Toggle -->
               <td class="py-4 px-6">
-                <span
-                  :class="[
-                    'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
-                    hotel.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' :
-                    hotel.status === 'pending' ? 'bg-yellow-500/10 text-yellow-400' :
-                    hotel.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
-                    'bg-gray-600/50 text-gray-400'
-                  ]"
-                >
-                  {{ getStatusLabel(hotel.status) }}
-                </span>
+                <div class="flex items-center gap-2">
+                  <!-- Toggle Switch for published/hidden -->
+                  <button
+                    v-if="hotel.status === 'published' || hotel.status === 'hidden'"
+                    @click="toggleVisibility(hotel)"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+                    :class="hotel.status === 'published' ? 'bg-emerald-500' : 'bg-gray-600'"
+                  >
+                    <span
+                      class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform"
+                      :class="hotel.status === 'published' ? 'translate-x-6' : 'translate-x-1'"
+                    />
+                  </button>
+                  <span
+                    :class="[
+                      'inline-flex items-center px-3 py-1 rounded-full text-xs font-medium',
+                      hotel.status === 'published' ? 'bg-emerald-500/10 text-emerald-400' :
+                      hotel.status === 'hidden' ? 'bg-gray-600/50 text-gray-400' :
+                      hotel.status === 'pending' ? 'bg-yellow-500/10 text-yellow-400' :
+                      hotel.status === 'rejected' ? 'bg-red-500/10 text-red-400' :
+                      'bg-gray-600/50 text-gray-400'
+                    ]"
+                  >
+                    {{ getStatusLabel(hotel.status) }}
+                  </span>
+                </div>
               </td>
 
               <!-- Featured -->
@@ -232,6 +247,15 @@
                       ปฏิเสธ
                     </button>
                   </template>
+                  <NuxtLink
+                    :to="`/backend/hotels/${hotel.id}/edit`"
+                    class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-yellow-500/10 text-yellow-400 hover:bg-yellow-500/20 transition-colors"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                    </svg>
+                    แก้ไข
+                  </NuxtLink>
                   <NuxtLink
                     :to="`/hotels/${hotel.province?.slug || 'unknown'}/${hotel.slug}`"
                     target="_blank"
@@ -435,6 +459,7 @@ watch([filterStatus, filterFeatured], () => {
 const statusOptions = [
   { label: 'สถานะทั้งหมด', value: '' },
   { label: 'เผยแพร่แล้ว', value: 'published' },
+  { label: 'ซ่อนอยู่', value: 'hidden' },
   { label: 'รอตรวจสอบ', value: 'pending' },
   { label: 'แบบร่าง', value: 'draft' },
   { label: 'ไม่ผ่าน', value: 'rejected' }
@@ -595,11 +620,35 @@ const deleteHotel = async (hotelId: string) => {
 const getStatusLabel = (status: string): string => {
   const labels: Record<string, string> = {
     published: 'เผยแพร่แล้ว',
+    hidden: 'ซ่อนอยู่',
     pending: 'รอตรวจสอบ',
     draft: 'แบบร่าง',
     rejected: 'ไม่ผ่าน'
   }
   return labels[status] || status
+}
+
+/**
+ * Toggle visibility (published/hidden)
+ */
+const toggleVisibility = async (hotel: any) => {
+  const newStatus = hotel.status === 'published' ? false : true
+  const actionText = newStatus ? 'เปิด' : 'ปิด'
+
+  try {
+    await $fetch(`/api/hotels/${hotel.id}/toggle-visibility`, {
+      method: 'POST',
+      body: {
+        isVisible: newStatus
+      }
+    })
+
+    // Update local data
+    hotel.status = newStatus ? 'published' : 'hidden'
+  } catch (error) {
+    console.error('Failed to toggle visibility:', error)
+    alert(`ไม่สามารถ${actionText}การแสดงผลได้`)
+  }
 }
 
 /**

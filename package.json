@@ -25,6 +25,7 @@
     "@nuxt/ui": "^4.2.1",
     "firebase": "^10.14.1",
     "firebase-admin": "^12.7.0",
+    "nodemailer": "^7.0.11",
     "nuxt": "^3.14.1592",
     "swiper": "^11.1.15",
     "vue": "latest",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
+    "@types/nodemailer": "^7.0.4",
     "autoprefixer": "^10.4.20",
     "mysql2": "^3.11.5",
     "postcss": "^8.4.49",

@@ -46,6 +46,11 @@
           </NuxtLink>
         </nav>
 
+        <!-- Global Search Bar (Desktop) -->
+        <div class="hidden lg:block">
+          <GlobalSearchBar />
+        </div>
+
         <!-- Auth Buttons / User Menu -->
         <div class="hidden md:flex items-center space-x-3">
           <!-- Not Logged In -->
@@ -122,13 +127,6 @@
 
                   <!-- Regular User Menu -->
                   <NuxtLink
-                    to="/dashboard"
-                    class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
-                    @click="closeUserMenu"
-                  >
-                    แดชบอร์ด
-                  </NuxtLink>
-                  <NuxtLink
                     to="/my-hotels"
                     class="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors"
                     @click="closeUserMenu"
@@ -204,6 +202,11 @@
           v-if="isMobileMenuOpen"
           class="md:hidden pb-4 border-t mt-2 pt-4"
         >
+          <!-- Mobile Search -->
+          <div class="mb-4 lg:hidden">
+            <GlobalSearchBar />
+          </div>
+
           <nav class="flex flex-col space-y-3">
             <NuxtLink
               to="/"

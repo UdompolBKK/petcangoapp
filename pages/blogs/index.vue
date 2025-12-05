@@ -1,5 +1,20 @@
 <template>
   <div>
+    <!-- Breadcrumb -->
+    <section class="bg-gray-50 py-4 border-b">
+      <div class="container-custom">
+        <nav class="flex items-center gap-2 text-sm">
+          <NuxtLink to="/" class="text-gray-500 hover:text-gray-700 transition-colors">
+            หน้าหลัก
+          </NuxtLink>
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+          <span class="text-gray-900 font-medium">บทความ</span>
+        </nav>
+      </div>
+    </section>
+
     <!-- Page Header -->
     <section class="bg-primary-500 text-white py-16">
       <div class="container-custom">
@@ -68,7 +83,7 @@
         <!-- Stats -->
         <div class="mb-8">
           <p class="text-gray-600">
-            แสดง <span class="font-bold text-primary-500">{{ filteredPosts.length }}</span> บทความ
+            แสดง <span class="font-bold text-primary-500">{{ paginatedPosts.length }}</span> จาก <span class="font-bold text-primary-500">{{ filteredPosts.length }}</span> บทความ
           </p>
         </div>
 
@@ -87,7 +102,7 @@
         <!-- Grid -->
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           <BlogCard
-            v-for="post in filteredPosts"
+            v-for="post in paginatedPosts"
             :key="post.id"
             :post="post"
           />
@@ -105,14 +120,49 @@
           <p class="text-gray-500">ลองค้นหาด้วยคำอื่นดูนะครับ</p>
         </div>
 
-        <!-- Load More -->
-        <div v-if="filteredPosts.length > 0 && hasMore" class="mt-12 text-center">
-          <button
-            @click="loadMore"
-            class="btn btn-outline"
-          >
-            โหลดบทความเพิ่มเติม
-          </button>
+        <!-- Pagination -->
+        <div v-if="totalPages > 1" class="mt-12 flex justify-center">
+          <nav class="flex items-center gap-2">
+            <!-- Previous -->
+            <button
+              @click="goToPage(currentPage - 1)"
+              :disabled="currentPage === 1"
+              class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+              </svg>
+            </button>
+
+            <!-- Page Numbers -->
+            <template v-for="page in visiblePages" :key="page">
+              <span v-if="page === '...'" class="px-3 py-2 text-gray-500">...</span>
+              <button
+                v-else
+                @click="goToPage(page as number)"
+                :class="[
+                  'px-4 py-2 rounded-lg font-medium transition-colors',
+                  currentPage === page
+                    ? 'text-white'
+                    : 'border border-gray-300 text-gray-700 hover:bg-gray-100'
+                ]"
+                :style="currentPage === page ? 'background-color: #FF8E00;' : ''"
+              >
+                {{ page }}
+              </button>
+            </template>
+
+            <!-- Next -->
+            <button
+              @click="goToPage(currentPage + 1)"
+              :disabled="currentPage === totalPages"
+              class="px-3 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </button>
+          </nav>
         </div>
       </div>
     </section>
@@ -133,16 +183,19 @@ useHead({
 
 const searchQuery = ref('')
 const sortBy = ref<'latest' | 'popular'>('latest')
-const hasMore = ref(false)
 const loading = ref(true)
 const posts = ref<any[]>([])
 
-// Load blogs from API (avoids Firestore index issues)
+// Pagination
+const itemsPerPage = 15
+const currentPage = ref(1)
+
+// Load blogs from API
 const loadBlogs = async () => {
   try {
     loading.value = true
     const response = await $fetch('/api/blogs', {
-      params: { limit: 50, status: 'published' }
+      params: { limit: 100, status: 'published' }
     }) as any
 
     let blogs = response.data || []
@@ -162,7 +215,13 @@ const loadBlogs = async () => {
 
 // Watch sort change
 watch(sortBy, () => {
+  currentPage.value = 1
   loadBlogs()
+})
+
+// Reset page when search changes
+watch(searchQuery, () => {
+  currentPage.value = 1
 })
 
 // Load on mount
@@ -187,9 +246,52 @@ const filteredPosts = computed(() => {
   return result
 })
 
-const loadMore = () => {
-  // TODO: Implement pagination
-  console.log('Load more posts')
-  hasMore.value = false
+// Pagination computed
+const totalPages = computed(() => Math.ceil(filteredPosts.value.length / itemsPerPage))
+
+const paginatedPosts = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredPosts.value.slice(start, end)
+})
+
+const visiblePages = computed(() => {
+  const pages: (number | string)[] = []
+  const total = totalPages.value
+  const current = currentPage.value
+
+  if (total <= 7) {
+    for (let i = 1; i <= total; i++) {
+      pages.push(i)
+    }
+  } else {
+    pages.push(1)
+
+    if (current > 3) {
+      pages.push('...')
+    }
+
+    const start = Math.max(2, current - 1)
+    const end = Math.min(total - 1, current + 1)
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i)
+    }
+
+    if (current < total - 2) {
+      pages.push('...')
+    }
+
+    pages.push(total)
+  }
+
+  return pages
+})
+
+const goToPage = (page: number) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 </script>

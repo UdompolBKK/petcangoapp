@@ -35,7 +35,7 @@
         </div>
         <button
           @click="loadUsers"
-          class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+          class="bg-primary-500 hover:bg-primary-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -46,7 +46,7 @@
 
       <!-- Loading State -->
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
 
       <!-- Error State -->
@@ -84,23 +84,23 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <img
-                    v-if="user.photoURL"
-                    :src="user.photoURL"
-                    :alt="user.displayName"
-                    class="h-10 w-10 rounded-full"
+                    v-if="getUserPhoto(user)"
+                    :src="getUserPhoto(user)"
+                    :alt="getUserName(user)"
+                    class="h-10 w-10 rounded-full object-cover"
                   />
                   <div
                     v-else
-                    class="h-10 w-10 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 font-bold"
+                    class="h-10 w-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-bold"
                   >
-                    {{ (user.displayName || user.email || 'U')[0].toUpperCase() }}
+                    {{ getUserInitial(user) }}
                   </div>
                   <div class="ml-4">
                     <div class="text-sm font-medium text-gray-900">
-                      {{ user.displayName || 'ไม่ระบุชื่อ' }}
+                      {{ getUserName(user) }}
                     </div>
                     <div class="text-sm text-gray-500">
-                      {{ user.id }}
+                      UID: {{ user.id.substring(0, 8) }}...
                     </div>
                   </div>
                 </div>
@@ -114,48 +114,56 @@
               <td class="px-6 py-4 whitespace-nowrap">
                 <span
                   :class="[
-                    'px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
-                    user.role === 'admin'
-                      ? 'bg-purple-100 text-purple-800'
-                      : 'bg-green-100 text-green-800'
+                    'px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full',
+                    user.role === 'superadmin'
+                      ? 'bg-red-100 text-red-800'
+                      : user.role === 'admin'
+                        ? 'bg-primary-100 text-primary-800'
+                        : 'bg-gray-100 text-gray-800'
                   ]"
                 >
-                  {{ user.role || 'user' }}
+                  {{ getRoleLabel(user.role) }}
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {{ formatDate(user.createdAt) }}
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                <button
-                  v-if="user.role !== 'admin'"
-                  @click="setAdmin(user.id, true)"
-                  class="text-purple-600 hover:text-purple-900"
-                  title="ตั้งเป็น Admin"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                </button>
-                <button
-                  v-else
-                  @click="setAdmin(user.id, false)"
-                  class="text-gray-600 hover:text-gray-900"
-                  title="ยกเลิก Admin"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-                <button
-                  @click="deleteUser(user.id)"
-                  class="text-red-600 hover:text-red-900"
-                  title="ลบผู้ใช้"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                  </svg>
-                </button>
+              <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <div class="flex items-center justify-end space-x-2">
+                  <button
+                    v-if="user.role !== 'admin' && user.role !== 'superadmin'"
+                    @click="setAdmin(user.id, true)"
+                    class="inline-flex items-center px-3 py-1.5 bg-primary-500 hover:bg-primary-600 text-white text-xs font-medium rounded-lg transition-colors"
+                    title="ตั้งเป็น Admin"
+                  >
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                    ตั้ง Admin
+                  </button>
+                  <button
+                    v-else-if="user.role === 'admin'"
+                    @click="setAdmin(user.id, false)"
+                    class="inline-flex items-center px-3 py-1.5 bg-gray-500 hover:bg-gray-600 text-white text-xs font-medium rounded-lg transition-colors"
+                    title="ยกเลิก Admin"
+                  >
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    ยกเลิก
+                  </button>
+                  <button
+                    v-if="user.role !== 'superadmin'"
+                    @click="deleteUser(user.id)"
+                    class="inline-flex items-center px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-medium rounded-lg transition-colors"
+                    title="ลบผู้ใช้"
+                  >
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                    ลบ
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -262,6 +270,40 @@ const deleteUser = async (uid: string) => {
     console.error('Failed to delete user:', err)
     alert('ไม่สามารถลบผู้ใช้ได้')
   }
+}
+
+/**
+ * Get user display name
+ */
+const getUserName = (user: any): string => {
+  return user.displayName || user.name || user.display_name || user.email?.split('@')[0] || 'ไม่ระบุชื่อ'
+}
+
+/**
+ * Get user photo URL
+ */
+const getUserPhoto = (user: any): string | null => {
+  return user.photoURL || user.photoUrl || user.photo || user.avatar || user.profileImage || null
+}
+
+/**
+ * Get user initial for avatar
+ */
+const getUserInitial = (user: any): string => {
+  const name = getUserName(user)
+  return name.charAt(0).toUpperCase()
+}
+
+/**
+ * Get role label in Thai
+ */
+const getRoleLabel = (role: string | undefined): string => {
+  const labels: Record<string, string> = {
+    superadmin: 'Super Admin',
+    admin: 'Admin',
+    user: 'User'
+  }
+  return labels[role || 'user'] || 'User'
 }
 
 /**

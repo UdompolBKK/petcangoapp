@@ -1,0 +1,24 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "pageviews",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "pageType", "order": "ASCENDING" },
+        { "fieldPath": "pageId", "order": "ASCENDING" },
+        { "fieldPath": "hashedIP", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "pageviews",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "pageType", "order": "ASCENDING" },
+        { "fieldPath": "pageId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

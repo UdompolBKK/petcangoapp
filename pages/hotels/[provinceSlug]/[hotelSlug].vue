@@ -1,5 +1,6 @@
 <template>
-  <div v-if="hotel">
+  <div class="hotel-page">
+    <template v-if="hotel">
     <section class="relative h-[500px] overflow-hidden bg-gray-900">
       <img
         :src="hotel.mainImage || hotel.image || '/images/placeholder-hotel.jpg'"
@@ -62,7 +63,7 @@
             <div class="lg:col-span-2 space-y-8">
               <div class="bg-white rounded-xl shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-900 mb-4">About</h2>
-                <p v-if="hotel.shortDescription" class="text-gray-700 mb-4">
+                <p v-if="hotel.shortDescription && hotel.shortDescription !== hotel.description" class="text-gray-700 mb-4">
                   {{ hotel.shortDescription }}
                 </p>
                 <div v-if="hotel.description" class="text-gray-700 whitespace-pre-line">
@@ -123,12 +124,30 @@
               <div class="bg-white rounded-xl shadow-md p-6">
                 <h2 class="text-2xl font-bold text-gray-900 mb-6">Reviews</h2>
 
+                <!-- Review Form for logged-in users -->
+                <div v-if="user" class="mb-8">
+                  <ReviewForm
+                    :hotel-id="hotel.id"
+                    @success="handleReviewSuccess"
+                  />
+                </div>
+                <div v-else class="mb-8 p-4 bg-gray-50 rounded-lg text-center">
+                  <p class="text-gray-600 mb-3">เข้าสู่ระบบเพื่อเขียนรีวิว</p>
+                  <NuxtLink
+                    to="/login"
+                    class="inline-block px-6 py-2 text-white font-medium rounded-lg transition-colors"
+                    style="background-color: #FF8E00;"
+                  >
+                    เข้าสู่ระบบ
+                  </NuxtLink>
+                </div>
+
                 <div v-if="reviews.length > 0" class="space-y-4">
                   <div v-for="review in reviews" :key="review.id" class="p-4 border border-gray-200 rounded-lg">
                     <div class="flex items-start justify-between mb-2">
                       <div class="flex items-center gap-3">
                         <img
-                          :src="review.userPhotoURL || '/common/nouser.jpg'"
+                          :src="review.userPhoto || review.userPhotoURL || '/common/nouser.jpg'"
                           :alt="review.userName"
                           class="w-10 h-10 rounded-full object-cover"
                           @error="handleImageError"
@@ -141,7 +160,7 @@
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
                               </svg>
                             </div>
-                            <span class="text-xs text-gray-500">{{ formatDate(review.createdAt) }}</span>
+                            <span class="text-xs text-gray-500">{{ formatReviewDate(review.createdAt) }}</span>
                           </div>
                         </div>
                       </div>
@@ -189,7 +208,10 @@
                 <a
                   v-if="hotel.phone"
                   :href="`tel:${hotel.phone}`"
-                  class="btn btn-primary w-full mb-3"
+                  class="block w-full text-center text-white font-medium py-3 px-4 rounded-lg transition-colors mb-3"
+                  style="background-color: #FF8E00;"
+                  onmouseover="this.style.backgroundColor='#E67E00'"
+                  onmouseout="this.style.backgroundColor='#FF8E00'"
                 >
                   Call to Book
                 </a>
@@ -223,16 +245,16 @@
         </div>
       </div>
     </section>
-  </div>
+    </template>
 
-  <div v-else class="min-h-screen flex items-center justify-center">
-    <div class="text-center">
-      <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
-      <p class="text-gray-600">Loading...</p>
+    <div v-else class="min-h-screen flex items-center justify-center">
+      <div class="text-center">
+        <div class="animate-spin rounded-full h-16 w-16 border-b-2 border-primary-500 mx-auto mb-4"></div>
+        <p class="text-gray-600">Loading...</p>
+      </div>
     </div>
-  </div>
 
-  <!-- Gallery Lightbox Modal with Animation -->
+    <!-- Gallery Lightbox Modal with Animation -->
   <Teleport to="body">
     <Transition
       enter-active-class="transition-opacity duration-300 ease-out"
@@ -318,6 +340,45 @@
       </div>
     </Transition>
   </Teleport>
+
+  <!-- Success Modal -->
+  <Teleport to="body">
+    <Transition
+      enter-active-class="transition-opacity duration-300 ease-out"
+      enter-from-class="opacity-0"
+      enter-to-class="opacity-100"
+      leave-active-class="transition-opacity duration-200 ease-in"
+      leave-from-class="opacity-100"
+      leave-to-class="opacity-0"
+    >
+      <div
+        v-if="showSuccessModal"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
+        @click="showSuccessModal = false"
+      >
+        <div
+          class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl"
+          @click.stop
+        >
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style="background-color: #FF8E00;">
+            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 mb-2">รีวิวสำเร็จ!</h3>
+          <p class="text-gray-600 mb-6">ขอบคุณสำหรับรีวิวของคุณ</p>
+          <button
+            @click="showSuccessModal = false"
+            class="px-6 py-2 text-white font-medium rounded-lg transition-colors"
+            style="background-color: #FF8E00;"
+          >
+            ปิด
+          </button>
+        </div>
+      </div>
+    </Transition>
+  </Teleport>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -329,6 +390,7 @@ const { getHotelBySlug, getHotelsByProvince } = useHotels()
 const { getCollection } = useFirestore()
 const { trackPageView } = usePageView()
 const { setHotelSEO } = useSEO()
+const { user } = useAuth()
 
 const hotel = ref<any>(null)
 const relatedHotels = ref<any[]>([])
@@ -336,6 +398,7 @@ const reviews = ref<any[]>([])
 const showGalleryModal = ref(false)
 const currentGalleryIndex = ref(0)
 const galleryDirection = ref('slide-right')
+const showSuccessModal = ref(false)
 
 const averageRating = computed(() => {
   if (reviews.value.length === 0) return 0
@@ -368,9 +431,27 @@ const formatNumber = (num: number): string => {
   return num.toLocaleString('en-US')
 }
 
-const formatDate = (date: string): string => {
-  const d = new Date(date)
-  return d.toLocaleDateString('en-US', {
+const formatReviewDate = (date: any): string => {
+  if (!date) return ''
+
+  let d: Date
+
+  // Handle Firestore Timestamp
+  if (date.toDate && typeof date.toDate === 'function') {
+    d = date.toDate()
+  } else if (date._seconds || date.seconds) {
+    d = new Date((date._seconds || date.seconds) * 1000)
+  } else if (typeof date === 'string') {
+    d = new Date(date)
+  } else if (date instanceof Date) {
+    d = date
+  } else {
+    return ''
+  }
+
+  if (isNaN(d.getTime())) return ''
+
+  return d.toLocaleDateString('th-TH', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
@@ -432,6 +513,15 @@ const loadReviews = async () => {
     console.error('Error loading reviews:', error)
     reviews.value = []
   }
+}
+
+// Handle review success - reload reviews and show modal
+const handleReviewSuccess = async () => {
+  await loadReviews()
+  showSuccessModal.value = true
+  setTimeout(() => {
+    showSuccessModal.value = false
+  }, 3000)
 }
 
 onMounted(async () => {
