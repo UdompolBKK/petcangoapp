@@ -52,7 +52,7 @@ export default defineEventHandler(async (event) => {
       const data = doc.data()
       if (data.slug) {
         dynamicPages.push({
-          url: `/province/${data.slug}`,
+          url: `/hotels/${data.slug}`,
           changefreq: 'weekly',
           priority: 0.8,
           lastmod: data.updatedAt?.toDate?.()?.toISOString()?.split('T')[0]

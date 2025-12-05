@@ -394,7 +394,7 @@ export const useSEO = () => {
     setBreadcrumbSchema([
       { name: 'หน้าหลัก', url: '/' },
       { name: 'จังหวัด', url: '/all-province' },
-      { name: provinceName, url: `/province/${hotel.slug?.split('/')[0]}` },
+      { name: provinceName, url: `/hotels/${hotel.slug?.split('/')[0]}` },
       { name: hotel.name, url: `/hotels/${hotel.slug}` }
     ])
   }
@@ -424,7 +424,7 @@ export const useSEO = () => {
     setBreadcrumbSchema([
       { name: 'หน้าหลัก', url: '/' },
       { name: 'จังหวัด', url: '/all-province' },
-      { name: province.name, url: `/province/${province.slug}` }
+      { name: province.name, url: `/hotels/${province.slug}` }
     ])
   }
 

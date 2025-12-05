@@ -19,7 +19,7 @@
             <span class="mx-2">/</span>
             <NuxtLink
               v-if="hotel.province"
-              :to="`/province/${getProvinceSlug(hotel.province)}`"
+              :to="`/hotels/${getProvinceSlug(hotel.province)}`"
               class="hover:text-white"
             >
               {{ getProvinceName(hotel.province) }}

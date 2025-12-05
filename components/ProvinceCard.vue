@@ -1,7 +1,7 @@
 <template>
   <div ref="cardRef" class="province-card">
     <NuxtLink
-      :to="`/province/${province.slug}`"
+      :to="`/hotels/${province.slug}`"
       class="block group relative overflow-hidden rounded-xl shadow-lg hover:shadow-xl transition-all"
       :class="{ 'animate-fade-in': isVisible }"
     >

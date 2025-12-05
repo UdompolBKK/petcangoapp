@@ -16,12 +16,12 @@
           <nav class="mb-4 text-sm">
             <NuxtLink to="/" class="hover:text-white/80">หน้าหลัก</NuxtLink>
             <span class="mx-2">/</span>
-            <NuxtLink to="/all-province" class="hover:text-white/80">จังหวัด</NuxtLink>
+            <NuxtLink to="/hotels" class="hover:text-white/80">ที่พัก</NuxtLink>
             <span class="mx-2">/</span>
             <span>{{ province.name }}</span>
           </nav>
 
-          <h1 class="text-4xl md:text-5xl font-bold mb-4">{{ province.name }}</h1>
+          <h1 class="text-4xl md:text-5xl font-bold mb-4">ที่พักสัตว์เลี้ยงใน{{ province.name }}</h1>
 
           <div class="flex flex-wrap items-center gap-4 text-white/90">
             <div class="flex items-center">
@@ -128,7 +128,7 @@
                 <NuxtLink
                   v-for="nearby in nearbyProvinces"
                   :key="nearby.id"
-                  :to="`/province/${nearby.slug}`"
+                  :to="`/hotels/${nearby.slug}`"
                   class="block p-3 bg-white rounded-lg hover:shadow-md transition-shadow"
                 >
                   <div class="flex items-center justify-between">
@@ -155,7 +155,7 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const slug = route.params.slug as string
+const provinceSlug = route.params.provinceSlug as string
 
 // Composables
 const { getProvinceBySlug } = useProvinces()
@@ -163,8 +163,8 @@ const { getHotelsByProvince } = useHotels()
 const { setProvinceSEO } = useSEO()
 
 // Data
-const province = ref(null)
-const hotels = ref([])
+const province = ref<any>(null)
+const hotels = ref<any[]>([])
 const nearbyProvinces = ref([
   { id: '9', name: 'ระยอง', slug: 'rayong', hotelCount: 24 },
   { id: '14', name: 'จันทบุรี', slug: 'chanthaburi', hotelCount: 16 },
@@ -190,7 +190,7 @@ const handleSearch = () => {
   navigateTo({
     path: '/search',
     query: {
-      province: province.value.name,
+      province: province.value?.name,
       keyword: searchKeyword.value
     }
   })
@@ -209,7 +209,7 @@ const handleAttractionImageError = (event: Event) => {
 // Load data from Firestore
 onMounted(async () => {
   // Get province data
-  const provinceData: any = await getProvinceBySlug(slug)
+  const provinceData: any = await getProvinceBySlug(provinceSlug)
   if (provinceData) {
     province.value = provinceData
 
@@ -220,7 +220,7 @@ onMounted(async () => {
       image: provinceData.image,
       hotelCount: provinceData.hotelCount,
       region: provinceData.region,
-      slug: slug
+      slug: provinceSlug
     })
 
     // Get hotels in this province

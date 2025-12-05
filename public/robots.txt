@@ -15,7 +15,8 @@ Disallow: /dashboard
 
 # Allow search engines to find everything else
 Allow: /hotels/
-Allow: /province/
+# Province pages now under /hotels/[province]
+# Allow: /province/  (deprecated)
 Allow: /blogs/
 Allow: /search
 Allow: /all-province
