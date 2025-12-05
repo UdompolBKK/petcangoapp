@@ -84,7 +84,18 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: 'แพ็คเกจและราคา - PetCanGo'
+// SEO
+const { setBasicMeta, setBreadcrumbSchema } = useSEO()
+
+setBasicMeta({
+  title: 'แพ็คเกจลงทะเบียนที่พัก - ราคาและบริการ',
+  description: 'แพ็คเกจลงทะเบียนที่พักบน PetCanGo เลือกแผนที่เหมาะสมกับธุรกิจของคุณ ตั้งแต่ฟรีจนถึง Business พร้อมฟีเจอร์ครบครัน',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['ลงทะเบียนที่พัก', 'แพ็คเกจโรงแรม', 'petcango pricing', 'ลงประกาศที่พักสัตว์เลี้ยง']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'แพ็คเกจและราคา', url: '/pricing' }
+])
 </script>

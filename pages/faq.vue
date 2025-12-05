@@ -42,6 +42,8 @@
 </template>
 
 <script setup lang="ts">
+const { setBasicMeta, setBreadcrumbSchema, setFAQSchema } = useSEO()
+
 const openIndex = ref<number | null>(0)
 
 const toggle = (index: number) => {
@@ -71,7 +73,19 @@ const faqs = [
   }
 ]
 
-useHead({
-  title: 'คำถามที่พบบ่อย - PetCanGo'
+// SEO
+setBasicMeta({
+  title: 'คำถามที่พบบ่อย (FAQ) - PetCanGo',
+  description: 'คำถามที่พบบ่อยเกี่ยวกับ PetCanGo วิธีค้นหาที่พักสัตว์เลี้ยง การลงทะเบียนที่พัก สัตว์เลี้ยงประเภทไหนที่รับ และอื่นๆ',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['FAQ', 'คำถามที่พบบ่อย', 'PetCanGo', 'ที่พักสัตว์เลี้ยง', 'วิธีใช้งาน']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'คำถามที่พบบ่อย', url: '/faq' }
+])
+
+// FAQ Schema for Rich Snippets
+setFAQSchema(faqs)
 </script>

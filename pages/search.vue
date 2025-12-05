@@ -232,18 +232,35 @@
 </template>
 
 <script setup lang="ts">
-// SEO
-useHead({
-  title: 'ค้นหาที่พักสัตว์เลี้ยง - PetCanGo',
-  meta: [
-    {
-      name: 'description',
-      content: 'ค้นหาที่พักที่รับสัตว์เลี้ยงทั่วประเทศไทย กรองตามจังหวัด ราคา และสิ่งอำนวยความสะดวก'
-    }
-  ]
+const route = useRoute()
+const { setBasicMeta, setBreadcrumbSchema } = useSEO()
+
+// Dynamic SEO based on search query
+const searchTitle = computed(() => {
+  const province = route.query.province as string
+  const keyword = route.query.keyword as string
+  if (province && keyword) {
+    return `ค้นหา "${keyword}" ใน${province} - ที่พักสัตว์เลี้ยง`
+  } else if (province) {
+    return `ที่พักสัตว์เลี้ยงใน${province}`
+  } else if (keyword) {
+    return `ค้นหา "${keyword}" - ที่พักสัตว์เลี้ยง`
+  }
+  return 'ค้นหาที่พักสัตว์เลี้ยงทั่วประเทศไทย'
 })
 
-const route = useRoute()
+// SEO
+setBasicMeta({
+  title: searchTitle.value,
+  description: 'ค้นหาที่พักที่รับสัตว์เลี้ยงทั่วประเทศไทย กรองตามจังหวัด ราคา และสิ่งอำนวยความสะดวก โรงแรม รีสอร์ท วิลล่า พร้อมรีวิวจากผู้ใช้จริง',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['ค้นหาที่พักสัตว์เลี้ยง', 'โรงแรมหมาเข้าได้', 'รีสอร์ทพาหมาเข้าได้', 'pet friendly hotel', 'ที่พักหมาแมว']
+})
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'ค้นหา', url: '/search' }
+])
 
 const searchParams = ref({
   province: (route.query.province as string) || '',

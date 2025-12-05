@@ -57,7 +57,7 @@ export const useSEO = () => {
   const siteUrl = 'https://petcango.com'
   const siteName = 'PetCanGo'
   const defaultImage = `${siteUrl}/common/og-image.jpg`
-  const defaultDescription = 'แพลตฟอร์มค้นหาที่พักสัตว์เลี้ยงที่ใหญ่ที่สุดในประเทศไทย รวบรวมโรงแรมและรีสอร์ทที่รับสัตว์เลี้ยงกว่า 550+ แห่ง ครอบคลุม 31 จังหวัด'
+  const defaultDescription = 'แพลตฟอร์มค้นหาที่พักสัตว์เลี้ยงที่ใหญ่ที่สุดในประเทศไทย รวบรวมโรงแรมและรีสอร์ทที่รับสัตว์เลี้ยงกว่า 550+ แห่ง ครอบคลุม 77 จังหวัด พาน้องเที่ยว ไม่ต้องห่วง'
 
   /**
    * สร้าง Meta Tags พื้นฐาน
@@ -100,8 +100,8 @@ export const useSEO = () => {
         { name: 'twitter:image', content: image },
 
         // Additional
-        { name: 'theme-color', content: '#ef4444' },
-        { name: 'msapplication-TileColor', content: '#ef4444' }
+        { name: 'theme-color', content: '#FF8E00' },
+        { name: 'msapplication-TileColor', content: '#FF8E00' }
       ],
       link: [
         { rel: 'canonical', href: url }

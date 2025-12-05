@@ -46,7 +46,18 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: 'ข้อกำหนดการใช้งาน - PetCanGo'
+// SEO
+const { setBasicMeta, setBreadcrumbSchema } = useSEO()
+
+setBasicMeta({
+  title: 'ข้อกำหนดการใช้งาน',
+  description: 'ข้อกำหนดการใช้งานเว็บไซต์ PetCanGo เงื่อนไขการใช้บริการ สิทธิ์และหน้าที่ของผู้ใช้งาน',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['ข้อกำหนดการใช้งาน', 'terms of service', 'petcango terms']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'ข้อกำหนดการใช้งาน', url: '/terms' }
+])
 </script>

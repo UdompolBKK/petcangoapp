@@ -49,7 +49,18 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: 'นโยบายความเป็นส่วนตัว - PetCanGo'
+// SEO
+const { setBasicMeta, setBreadcrumbSchema } = useSEO()
+
+setBasicMeta({
+  title: 'นโยบายความเป็นส่วนตัว',
+  description: 'นโยบายความเป็นส่วนตัวของ PetCanGo ข้อมูลที่เราเก็บรวบรวม วัตถุประสงค์ในการใช้ข้อมูล และสิทธิ์ของผู้ใช้งาน',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['นโยบายความเป็นส่วนตัว', 'privacy policy', 'petcango privacy']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'นโยบายความเป็นส่วนตัว', url: '/privacy' }
+])
 </script>

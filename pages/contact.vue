@@ -217,7 +217,18 @@ const resetForm = () => {
   errorMessage.value = ''
 }
 
-useHead({
-  title: 'ติดต่อเรา - PetCanGo'
+// SEO
+const { setBasicMeta, setBreadcrumbSchema } = useSEO()
+
+setBasicMeta({
+  title: 'ติดต่อเรา',
+  description: 'ติดต่อทีมงาน PetCanGo แพลตฟอร์มค้นหาที่พักสัตว์เลี้ยงที่ใหญ่ที่สุดในประเทศไทย สอบถามข้อมูล แจ้งปัญหา หรือเสนอแนะบริการ',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['ติดต่อ petcango', 'สอบถามที่พักสัตว์เลี้ยง', 'แจ้งปัญหา', 'contact petcango']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'ติดต่อเรา', url: '/contact' }
+])
 </script>

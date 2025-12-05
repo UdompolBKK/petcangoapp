@@ -170,16 +170,20 @@
 </template>
 
 <script setup lang="ts">
+const { setBasicMeta, setBreadcrumbSchema } = useSEO()
+
 // SEO
-useHead({
-  title: 'บทความและเคล็ดลับการเลี้ยงสัตว์ - PetCanGo',
-  meta: [
-    {
-      name: 'description',
-      content: 'บทความและความรู้เกี่ยวกับการเลี้ยงสัตว์เลี้ยง การดูแลสุขภาพสุนัขแมว และเคล็ดลับการพาสัตว์เลี้ยงเที่ยว'
-    }
-  ]
+setBasicMeta({
+  title: 'บทความและเคล็ดลับการเลี้ยงสัตว์เลี้ยง',
+  description: 'บทความและความรู้เกี่ยวกับการเลี้ยงสัตว์เลี้ยง การดูแลสุขภาพสุนัขแมว เคล็ดลับการพาสัตว์เลี้ยงเที่ยว รีวิวที่พัก และอีกมากมาย',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['บทความสัตว์เลี้ยง', 'เคล็ดลับเลี้ยงหมา', 'เคล็ดลับเลี้ยงแมว', 'พาหมาเที่ยว', 'รีวิวที่พักสัตว์เลี้ยง', 'สุขภาพสัตว์เลี้ยง']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'บทความ', url: '/blogs' }
+])
 
 const searchQuery = ref('')
 const sortBy = ref<'latest' | 'popular'>('latest')

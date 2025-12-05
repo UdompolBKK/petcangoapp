@@ -115,13 +115,17 @@ const filteredProvinces = computed(() => {
 const totalProvinces = computed(() => provinces.value.length)
 
 // SEO
-useHead({
-  title: 'ที่พักสัตว์เลี้ยงทั่วประเทศไทย - PetCanGo',
-  meta: [
-    {
-      name: 'description',
-      content: 'ค้นหาที่พักที่รับสัตว์เลี้ยงทั่วประเทศไทย ครอบคลุมทุกจังหวัด ทั้งภาคเหนือ ภาคกลาง ภาคตะวันออก ภาคใต้ และภาคตะวันออกเฉียงเหนือ'
-    }
-  ]
+const { setBasicMeta, setBreadcrumbSchema, setItemListSchema } = useSEO()
+
+setBasicMeta({
+  title: 'ที่พักสัตว์เลี้ยงทั่วประเทศไทย 77 จังหวัด',
+  description: 'ค้นหาที่พักที่รับสัตว์เลี้ยงทั่วประเทศไทย ครอบคลุม 77 จังหวัด ทั้งภาคเหนือ ภาคกลาง ภาคตะวันออก ภาคใต้ และภาคตะวันออกเฉียงเหนือ พาน้องเที่ยว ไม่ต้องห่วง',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['ที่พักสัตว์เลี้ยงทุกจังหวัด', 'โรงแรมหมาเข้าได้', 'รีสอร์ทพาหมาเข้าได้', 'pet friendly hotel thailand', 'ที่พักหมาแมว 77 จังหวัด']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'ทุกจังหวัด', url: '/all-province' }
+])
 </script>

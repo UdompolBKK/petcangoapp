@@ -155,13 +155,21 @@
 </template>
 
 <script setup lang="ts">
-useHead({
-  title: 'เกี่ยวกับเรา - PetCanGo',
-  meta: [
-    {
-      name: 'description',
-      content: 'เรื่องราวของ PetCanGo แพลตฟอร์มค้นหาที่พักสัตว์เลี้ยงครบครันที่สุดในประเทศไทย มากกว่า 550 ที่พักทั่วประเทศ'
-    }
-  ]
+const { setBasicMeta, setBreadcrumbSchema, setOrganizationSchema } = useSEO()
+
+// SEO
+setBasicMeta({
+  title: 'เกี่ยวกับเรา - PetCanGo แพลตฟอร์มที่พักสัตว์เลี้ยง',
+  description: 'เรื่องราวของ PetCanGo แพลตฟอร์มค้นหาที่พักสัตว์เลี้ยงครบครันที่สุดในประเทศไทย มากกว่า 550 ที่พักทั่วประเทศ พันธกิจ คุณค่า และเป้าหมายของเรา',
+  image: 'https://petcango.com/common/og-image.jpg',
+  keywords: ['PetCanGo', 'เกี่ยวกับเรา', 'ที่พักสัตว์เลี้ยง', 'แพลตฟอร์มที่พักหมาแมว', 'pet friendly thailand']
 })
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'เกี่ยวกับเรา', url: '/about' }
+])
+
+// Organization Schema
+setOrganizationSchema()
 </script>

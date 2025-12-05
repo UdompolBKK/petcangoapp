@@ -31,21 +31,42 @@
 
 <script setup lang="ts">
 const { getNewHotels } = useHotels()
+const { setBasicMeta, setBreadcrumbSchema, setItemListSchema, siteUrl } = useSEO()
 
 const hotels = ref<any[]>([])
 const loading = ref(true)
 
+// SEO
+setBasicMeta({
+  title: 'ที่พักสัตว์เลี้ยงทั้งหมด - โรงแรม รีสอร์ท วิลล่า ทั่วไทย',
+  description: 'รวมที่พักที่รับสัตว์เลี้ยงทั่วประเทศไทย กว่า 550+ แห่ง โรงแรม รีสอร์ท วิลล่า พร้อมรีวิวจากผู้ใช้จริง ค้นหาง่าย จองสะดวก พาน้องเที่ยวได้ทุกที่',
+  keywords: ['ที่พักสัตว์เลี้ยง', 'โรงแรมหมาเข้าได้', 'รีสอร์ทพาหมาเข้าได้', 'pet friendly hotel', 'ที่พักพาแมวเข้าได้', 'โรงแรมรับสัตว์เลี้ยง', 'ที่พักหมาแมว']
+})
+
+setBreadcrumbSchema([
+  { name: 'หน้าหลัก', url: '/' },
+  { name: 'ที่พักทั้งหมด', url: '/hotels' }
+])
+
 onMounted(async () => {
   try {
     hotels.value = await getNewHotels(50)
+
+    // Set ItemList Schema for SEO
+    if (hotels.value.length > 0) {
+      setItemListSchema(
+        hotels.value.slice(0, 10).map((hotel, index) => ({
+          name: hotel.name,
+          url: `/hotels/${hotel.province?.slug}/${hotel.slug}`,
+          image: hotel.mainImage || hotel.image,
+          position: index + 1
+        }))
+      )
+    }
   } catch (err) {
     console.error('Error loading hotels:', err)
   } finally {
     loading.value = false
   }
-})
-
-useHead({
-  title: 'ที่พักทั้งหมด - PetCanGo'
 })
 </script>
