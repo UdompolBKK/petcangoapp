@@ -1,4 +1,5 @@
 {
   "framework": "nuxtjs",
-  "regions": ["sin1"]
+  "regions": ["sin1"],
+  "installCommand": "pnpm install --no-frozen-lockfile"
 }
